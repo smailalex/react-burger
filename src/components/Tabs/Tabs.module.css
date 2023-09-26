@@ -1,0 +1,15 @@
+.tabswr{
+    display:flex;
+}
+.tabswr > div {
+        width: 100%;
+    }
+
+.listWr{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;   
+    max-height: 600px;
+    row-gap: 32px;
+    column-gap: 24px;
+}
