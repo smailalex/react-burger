@@ -37,7 +37,7 @@
   width: 36px;
 }
 .ingridientsWr{
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: calc(100vh - 560px) ;
   /* 560 sum height header+footer+ 2 bun */
 }

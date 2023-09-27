@@ -38,7 +38,7 @@ class BurgerConstructor extends React.Component {
             text={bun.name + ' (верх)'}
             price={bun.price}
             thumbnail={bun.image}
-            key={bun._id}
+            key={bun._id+"top"}
             handleClose={() => this.handleCloseIngridiens(bun._id)}
           />
           <div className={`${style.ingridientsWr} ${style.listWr}`}>
@@ -62,7 +62,7 @@ class BurgerConstructor extends React.Component {
             text={bun.name + ' (низ)'}
             price={bun.price}
             thumbnail={bun.image}
-            key={bun._id}
+            key={bun._id+"bottom"}
             handleClose={() => this.handleCloseIngridiens(bun._id)}
           />
         </div>

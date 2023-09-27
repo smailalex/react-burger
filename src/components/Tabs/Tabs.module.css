@@ -9,7 +9,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;   
-    max-height: 600px;
     row-gap: 32px;
     column-gap: 24px;
+    overflow-y: auto;
+    max-height: calc(100vh - 360px) ;
 }
