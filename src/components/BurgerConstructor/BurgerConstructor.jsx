@@ -1,35 +1,42 @@
 import React from 'react';
 import style from './BurgerConstructor.module.css';
-import Pin from '../../images/pin.png'
-import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
+import OrderDetails from '../OrderDetails/OrderDetails';
 
-class BurgerConstructor extends React.Component {
+import Modal from '../Modal/Modal'
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      card: props.ingredients.slice()
-    }
+
+function BurgerConstructor(props) {
+
+  const [card, setCard] = React.useState(props.ingredients.filter(e => e.type !== 'bun').slice())
+  const [visibleModal, setVisibleModal] = React.useState(false)
+  const [bun, setBun] = React.useState(props.ingredients.slice()[0]);
+  const [orderSum, setOrderSum] = React.useState(0)
+  const [orderId, setOrderId] = React.useState(0)
+
+  React.useEffect(() => {
+    //console.log('BurgerConstructor rend')
+    setOrderSum(card.reduce((sum, i) => sum + i.price, 0))
+    
+  })
+
+  const handleCloseIngridiens = (id) => {
+    const updateCard = card.filter(i => i._id !== id);
+    //console.log(card.length, updateCard.length)
+    setCard(updateCard)
   }
-  handleCloseIngridiens = (id) => {
-    this.setState((state) => {
-      let i = state.card.findIndex(e => e._id === id)
-      if (i >= 0) {
-        state.card.splice(i, 1)
-        return { card: state.card }
-      }
-
-    });
+  const handleModalShow = () => {
+    setOrderId(Math.floor(Math.random() * 10000))
+    setVisibleModal(true)
+    
+  }
+  const handleModalClose = () => {
+    setVisibleModal(false)
   }
 
-  render() {
-
-    const bun = this.state.card[0];
-    bun.isLocked = true;
-    const ingridients = this.state.card.filter(e => e.type !== 'bun')
-
-    return (
+  return (
+    <>
       <section className={style.section}>
         <div className={style.listWr} >
           <ConstructorElement
@@ -38,13 +45,14 @@ class BurgerConstructor extends React.Component {
             text={bun.name + ' (верх)'}
             price={bun.price}
             thumbnail={bun.image}
-            key={bun._id+"top"}
-            handleClose={() => this.handleCloseIngridiens(bun._id)}
+            key={bun._id + "top"}
+          //handleClose={() => handleCloseIngridiens(bun._id)}
+
           />
           <div className={`${style.ingridientsWr} ${style.listWr}`}>
-            {ingridients.map((i, index) => (
+            {card.map((i, index) => (
               <div className={style.itemWr} key={i._id}>
-                <img src={Pin} className={style.pin} alt="перетащить" />
+                <span className={style.drugIcon}><DragIcon type="primary" /></span>
                 <ConstructorElement
                   type={i.type}
                   isLocked={false}
@@ -52,7 +60,7 @@ class BurgerConstructor extends React.Component {
                   price={i.price}
                   thumbnail={i.image}
                   key={i._id}
-                  handleClose={() => this.handleCloseIngridiens(i._id)}
+                  handleClose={() => handleCloseIngridiens(i._id)}
                 />
               </div>))}
           </div>
@@ -62,25 +70,27 @@ class BurgerConstructor extends React.Component {
             text={bun.name + ' (низ)'}
             price={bun.price}
             thumbnail={bun.image}
-            key={bun._id+"bottom"}
-            handleClose={() => this.handleCloseIngridiens(bun._id)}
+            key={bun._id + "bottom"}
+          //handleClose={() => handleCloseIngridiens(bun._id)}
           />
         </div>
         <div className={`pt-10 pb-20 ${style.actionWr}`}>
           <div className={style.sumWr}>
-            <p className="text text_type_digits-medium">
-              {this.state.card.reduce((sum, i) => sum + i.price, 0)}
+            <p className="text text_type_digits-medium" >
+              {orderSum}
             </p>
             <CurrencyIcon type="primary" />
           </div>
 
-          <Button htmlType="button" type="primary" size="large">
+          <Button htmlType="button" type="primary" size="large" onClick={handleModalShow}>
             Оформить заказ
           </Button>
         </div>
       </section>
-    );
-  }
+      {visibleModal && <Modal orderId={orderId} onClose={handleModalClose} WrappedComponent={OrderDetails} />}
+    </>
+  )
+
 }
 
 BurgerConstructor.propTypes = {

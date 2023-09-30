@@ -16,11 +16,7 @@
   width: 100%;
   gap: 8px;
 }
-.section .listWr .itemWr .pin {
-  cursor: pointer;
-  display: block;
-  height: fit-content;
-}
+
 .section .actionWr {
   display: flex;
   gap: 40px;
@@ -40,4 +36,7 @@
   overflow-y: auto;
   max-height: calc(100vh - 560px) ;
   /* 560 sum height header+footer+ 2 bun */
+}
+.drugIcon {
+  cursor: pointer;
 }
