@@ -87,7 +87,11 @@ function BurgerConstructor(props) {
           </Button>
         </div>
       </section>
-      {visibleModal && <Modal orderId={orderId} onClose={handleModalClose} WrappedComponent={OrderDetails} />}
+      {visibleModal && 
+      <Modal  onClose={handleModalClose}>
+        <OrderDetails orderId={orderId}/>
+      </Modal>
+      }
     </>
   )
 

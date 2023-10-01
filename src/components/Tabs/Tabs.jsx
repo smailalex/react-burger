@@ -3,13 +3,33 @@ import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './Tabs.module.css';
 import Ingredient from '../Ingredient/Ingredient';
+import Modal from '../Modal/Modal';
+
+import IngredientDetails from '../IngredientDetails/IngredientDetails'
 
 const Tabs = ({ ingredients }) => {
   const [current, setCurrent] = React.useState('bun');
+
+  const [visibleModal, setVisibleModal] = React.useState(false)
+  const [ingredientDetailsData, setIngredientDetailsData] = React.useState(false)
+
+  const handleModalClose = () => {
+    setVisibleModal(false)
+  }
+
+  
+  const handleModalOpen = (clickedIngridient) => {
+   setIngredientDetailsData(clickedIngridient)
+   setVisibleModal(true)
+  }
+
+
+
   let ing = ingredients.filter((i) => i.type === current);
   useEffect(() => {
-    ing = ingredients.filter((i) => i.type === current);
-  });
+    //ing = ingredients.filter((i) => i.type === current);
+    //console.log('tabs rend')
+  },[]);
   return (
     <>
       <nav className={style.tabswr}>
@@ -29,8 +49,11 @@ const Tabs = ({ ingredients }) => {
         {current === 'main' && "Начики"}
       </p>
       <div className={`pl-4 pr-4 ${style.listWr}`}>
-        {ing && ing.map((ingredient) => <Ingredient {...ingredient} key={ingredient._id} />)}
+        {ing && ing.map((ingredient) => <Ingredient onOpen={handleModalOpen} ingredient={ingredient} key={ingredient._id} />)}
       </div>
+      {visibleModal && <Modal onClose={handleModalClose} >
+        <IngredientDetails ingredient={ingredientDetailsData} />
+      </Modal>}
 
     </>
   )

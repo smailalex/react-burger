@@ -9,35 +9,44 @@ const API = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
 
-  const [isLoadingData, setIsLoadingData] = React.useState(false)
+  const [isDataLoaded, setIsDataLoaded] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(true)
   const [data, setData] = React.useState({})
-  const [error, setError] = React.useState({isError: false, message: ''})
+  const [error, setError] = React.useState({ isError: false, message: '' })
 
   React.useEffect(() => {
     const data = {}
-    
-      fetch(API)
-      .then((response) => response.json())      
-      .then(json =>  {
-        json.success && setData(json.data) 
+
+    fetch(API)
+      .then((response) => {
+        if (response.ok) {
+         return response.json()
+        }
+        return Promise.reject(`Ошибка ${response.status}`)
       })
-      .catch ((error) => {        
-        setError({isError: true, message: error.message})
-        setIsLoadingData(false)
-        console.error(error.message)
+      .then(json => {
+        json.success && setData(json.data);
+        setIsDataLoaded(true)        
       })
-      .finally(() => setIsLoadingData(true)) 
-    
-  },[])
+      .catch((error) => {
+        setError({ isError: true, message: error })
+        setIsDataLoaded(false)
+        //console.error(error)
+      })
+      .finally(() => {        
+        setIsLoading(false)
+      })
+
+  }, [])
 
   return (
-    <div className={style.App}>      
+    <div className={style.App}>
       <AppHeader />
       <main className={style.main}>
-        {!isLoadingData && <p>Данные загружаются...</p>}
-        {error.isError && <p>Возникла ошибка загрузки данных {/* error.message */}</p>}
-        {isLoadingData && !error.isError &&  <BurgerIngredients ingredients={data} />}
-        {isLoadingData && !error.isError && <BurgerConstructor ingredients={data} />}         
+        {isLoading && <p>Данные загружаются...</p>}
+        {error.isError && <p>Возникла ошибка загрузки данных ({error.message })</p>}
+        {isDataLoaded && !error.isError && <BurgerIngredients ingredients={data} />}
+        {isDataLoaded && !error.isError && <BurgerConstructor ingredients={data} />}
       </main>
     </div>
   );
