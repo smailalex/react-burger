@@ -1,0 +1,42 @@
+.section {
+  padding-top: 100px;
+  width: 100%;
+}
+.section .listWr {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+.section .listWr .itemWr {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.section .actionWr {
+  display: flex;
+  gap: 40px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+.section .actionWr .sumWr {
+  display: flex;
+  gap: 8px;
+}
+.section .actionWr .sumWr svg {
+  height: 36px;
+  width: 36px;
+}
+.ingridientsWr{
+  overflow-y: auto;
+  max-height: calc(100vh - 560px) ;
+  /* 560 sum height header+footer+ 2 bun */
+}
+.drugIcon {
+  cursor: pointer;
+}
