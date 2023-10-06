@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-const Types = {    
-    ingredient: PropTypes.shape( {
+const Types = {
+    ingredient: PropTypes.shape({
         _id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         type: PropTypes.string,
@@ -17,7 +17,9 @@ const Types = {
 
     }).isRequired,
     order: {
-        orderId: PropTypes.number.isRequired
+        order: PropTypes.shape({
+            number: PropTypes.number.isRequired
+        })
     },
     modal: {
         onClose: PropTypes.func.isRequired

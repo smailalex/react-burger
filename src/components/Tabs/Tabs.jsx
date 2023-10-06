@@ -7,6 +7,8 @@ import Modal from '../Modal/Modal';
 
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
 
+
+
 const Tabs = ({ ingredients }) => {
   const [current, setCurrent] = React.useState('bun');
 
@@ -28,8 +30,8 @@ const Tabs = ({ ingredients }) => {
   let ing = ingredients.filter((i) => i.type === current);
   useEffect(() => {
     //ing = ingredients.filter((i) => i.type === current);
-    //console.log('tabs rend')
-  },[]);
+    console.log('tabs rend')
+  });
   return (
     <>
       <nav className={style.tabswr}>
