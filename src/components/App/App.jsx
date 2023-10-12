@@ -12,11 +12,11 @@ function App() {
 
   const [isDataLoaded, setIsDataLoaded] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(true)
-  const [data, setData] = React.useState({})
+  const [ingredientData, setIngredientData] = React.useState({})
   const [error, setError] = React.useState({ isError: false, message: '' })
 
   React.useEffect(() => {
-    const data = {}
+    const ingredientData = {}
 
     fetch(API)
       .then((response) => {
@@ -26,7 +26,7 @@ function App() {
         return Promise.reject(`Ошибка ${response.status}`)
       })
       .then(json => {
-        json.success && setData(json.data);
+        json.success && setIngredientData(json.data);
         setIsDataLoaded(true)
       })
       .catch((error) => {
@@ -47,9 +47,9 @@ function App() {
         {isLoading && <p>Данные загружаются...</p>}
         {error.isError && <p>Возникла ошибка загрузки данных ({error.message})</p>}
         {isDataLoaded && !error.isError &&
-          <IngredientContext.Provider value={data}>
+          <IngredientContext.Provider value={ingredientData}>
             <BurgerIngredients />
-            <BurgerConstructor ingredients={data} />
+            <BurgerConstructor ingredients={ingredientData} />
           </IngredientContext.Provider>
         }
 

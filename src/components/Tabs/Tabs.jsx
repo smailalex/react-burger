@@ -31,7 +31,7 @@ const Tabs = ({ ingredients }) => {
   useEffect(() => {
     //ing = ingredients.filter((i) => i.type === current);
     console.log('tabs rend')
-  });
+  },[]);
   return (
     <>
       <nav className={style.tabswr}>
