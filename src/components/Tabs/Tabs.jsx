@@ -6,10 +6,13 @@ import Ingredient from '../Ingredient/Ingredient';
 import Modal from '../Modal/Modal';
 
 import IngredientDetails from '../IngredientDetails/IngredientDetails'
+import {useSelector} from "react-redux";
 
 
 
-const Tabs = ({ ingredients }) => {
+const Tabs = () => {
+  const {ingredients} = useSelector(state => state.ingredientsReducer);
+
   const [current, setCurrent] = React.useState('bun');
 
   const [visibleModal, setVisibleModal] = React.useState(false)
@@ -24,8 +27,6 @@ const Tabs = ({ ingredients }) => {
    setIngredientDetailsData(clickedIngridient)
    setVisibleModal(true)
   }
-
-
 
   let ing = ingredients.filter((i) => i.type === current);
   useEffect(() => {
@@ -61,6 +62,6 @@ const Tabs = ({ ingredients }) => {
   )
 }
 Tabs.propTypes = {
-  ingredients: PropTypes.array.isRequired
+  ingredients: PropTypes.array
 }
 export default Tabs
