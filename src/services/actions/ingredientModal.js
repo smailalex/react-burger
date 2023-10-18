@@ -1,0 +1,2 @@
+export  const SET_MODAL_DATA = 'SET_MODAL_DATA';
+export  const DELETE_MODAL_DATA = 'DELETE_MODAL_DATA';

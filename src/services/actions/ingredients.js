@@ -2,6 +2,8 @@ const API = 'https://norma.nomoreparties.space/api/ingredients';
 export const GET_INGREDIENTS_REQUEST = 'INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_REQUEST_SUCCESS = 'INGREDIENTS_REQUEST_SUCCESS';
 export const GET_INGREDIENTS_REQUEST_FILED = 'INGREDIENTS_REQUEST_FILED';
+export const SET_COUNT_INGREDIENT = 'SET_COUNT_INGREDIENT';
+
 export function getIngredients() {
     return function(dispatch) {
         dispatch({
@@ -18,7 +20,7 @@ export function getIngredients() {
                 json.success &&
                 dispatch({
                     type: GET_INGREDIENTS_REQUEST_SUCCESS,
-                    ingredients: json.data
+                    payload: json.data
                 });
             })
             .catch((error) => {

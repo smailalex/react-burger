@@ -44,5 +44,6 @@
   cursor: pointer;
 }
 .onHover{
-  border: 2px solid green;
+  border: 2px solid rgba(0, 128, 0, 0.62);
+  border-radius: 5px;
 }

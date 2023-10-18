@@ -13,40 +13,16 @@ const API = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
 
-  const [isDataLoaded, setIsDataLoaded] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState(true)
+  //const [isDataLoaded, setIsDataLoaded] = React.useState(false)
+ // const [isLoading, setIsLoading] = React.useState(true)
   //const [ingredientData, setIngredientData] = React.useState({})
   const [error, setError] = React.useState({ isError: false, message: '' })
   const dispatch = useDispatch();
-  const {ingredients, ingredientRequest, ingredientRequestFiled} = useSelector(state => state.ingredientsReducer);
+  const ingredientSelector = (state) => state.ingredients;
+  const {ingredientRequest, ingredientRequestFiled} = useSelector(ingredientSelector);
     useEffect(() => {
         dispatch(getIngredients())
     }, [dispatch]);
-
-  /*React.useEffect(() => {
-    const ingredientData = {}
-
-    fetch(API)
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        }
-        return Promise.reject(`Ошибка ${response.status}`)
-      })
-      .then(json => {
-        json.success && setIngredientData(json.data);
-        setIsDataLoaded(true)
-      })
-      .catch((error) => {
-        setError({ isError: true, message: error })
-        setIsDataLoaded(false)
-        //console.error(error)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-
-  }, [])*/
 
   return (
     <div className={style.App}>
