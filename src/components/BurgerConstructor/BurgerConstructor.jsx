@@ -3,13 +3,13 @@ import style from './BurgerConstructor.module.css';
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import {useDrop, useDrag} from 'react-dnd';
+import {useDrop} from 'react-dnd';
 
 import Modal from '../Modal/Modal';
 import {useDispatch, useSelector} from "react-redux";
 import {DELETE_INGREDIENT, ADD_INGREDIENT, SET_INGREDIENT_BUN, SET_CART} from "../../services/actions/cart";
 import {makeOrder} from "../../services/actions/order";
-import {SET_COUNT_INGREDIENT} from "../../services/actions/ingredients";
+import {ADD_COUNT_INGREDIENT, DELETE_COUNT_INGREDIENT} from "../../services/actions/ingredients";
 import {ConstructorElementWrapper} from "../ConstructorElementWrapper/ConstructorElementWrapper";
 
 function BurgerConstructor(prop) {
@@ -23,7 +23,6 @@ function BurgerConstructor(prop) {
     //const [orderError, setOrderError] = React.useState({isError: false, message: 'defaul error text'})
 
     useEffect(() => {
-        //console.log(firstBun)
         dispatch({type: SET_INGREDIENT_BUN, payload: firstBun})
         dispatchOrderSum({type: 'count'})
     }, []);
@@ -37,7 +36,7 @@ function BurgerConstructor(prop) {
         drop(ingredient) {
             if ((['main', 'sauce'].includes(ingredient.type))) {
                 dispatch({type: ADD_INGREDIENT, ingredient})
-                dispatch({type: SET_COUNT_INGREDIENT, payload: {_id: ingredient._id, count: isNaN(ingredient.count) ? 1 : ingredient.count+1 }})
+                dispatch({type: ADD_COUNT_INGREDIENT, payload: {_id: ingredient._id}})
             }
             if (ingredient.type === 'bun') {
                 dispatch({type: SET_INGREDIENT_BUN, payload: ingredient})
@@ -57,9 +56,10 @@ function BurgerConstructor(prop) {
     }
 
     const handleRemoveIngridien = (ingredient) => {
-        //console.log(ingredient)
+        console.log(ingredient._id)
+        dispatch({type: DELETE_COUNT_INGREDIENT, payload: {_id: ingredient._id}})
         dispatch({type: DELETE_INGREDIENT, payload: ingredient.key})
-        //dispatch({type: SET_COUNT_INGREDIENT, payload: {_id: ingredient._id, count: null }})
+
         dispatchOrderSum({type: 'count'})
     }
     const handleOrderMake = () => {

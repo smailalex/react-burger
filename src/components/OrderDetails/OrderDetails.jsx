@@ -18,7 +18,6 @@ function OrderDetails({ order, orderError }) {
                 </>
             }
             {orderError.isError && <p>Ошибка оформления заказа ({orderError.message})</p>}
-
         </div>
 
     )

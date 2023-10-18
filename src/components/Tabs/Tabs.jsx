@@ -15,11 +15,6 @@ const Tabs = () => {
 
     const [current, setCurrent] = React.useState('bun');
 
-    //let ing = ingredients.filter((i) => i.type === current);
-    useEffect(() => {
-        //ing = ingredients.filter((i) => i.type === current);
-        //console.log('tabs rend')
-    }, []);
     const categoryArr = [
         {name: 'bun', value: 'Булки'},
         {name: 'sauce', value: 'Соусы'},
@@ -33,11 +28,7 @@ const Tabs = () => {
                     </Tab>
                 )}
             </nav>
-            {/*<p className="text text_type_main-medium mt-10">
-                {current === 'bun' && "Булки"}
-                {current === 'sauce' && "Соусы"}
-                {current === 'main' && "Начики"}
-            </p>*/}
+
             <div className={`pl-4 pr-4 ${style.listWr}`}>
                 {categoryArr.map((item, index) =>
                         <>
@@ -46,7 +37,6 @@ const Tabs = () => {
                             </p>
                             {ingredients.map((ingredient) => ingredient.type === item.name ? <Ingredient ingredient={ingredient} key={ingredient._id}/> : null)}
                         </>
-
 
                 )}
 

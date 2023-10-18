@@ -3,14 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './components/App/App';
 import reportWebVitals from './reportWebVitals';
-
-
-
 import { createStore, compose, applyMiddleware } from 'redux';
 import { rootReducer } from './services/reducers/rootReducer'; 
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-
 
 const composeEnhancers =
     typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -20,8 +16,6 @@ const enhancer = composeEnhancers(
     applyMiddleware(thunk)
 );
 const store = createStore(rootReducer, enhancer);
-
-
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')// as HTMLElement

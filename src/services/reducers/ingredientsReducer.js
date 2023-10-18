@@ -2,7 +2,8 @@ import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_REQUEST_FILED,
     GET_INGREDIENTS_REQUEST_SUCCESS,
-    SET_COUNT_INGREDIENT
+    ADD_COUNT_INGREDIENT,
+    DELETE_COUNT_INGREDIENT
 } from '../actions/ingredients';
 
 const initialState = {
@@ -35,10 +36,15 @@ export const ingredientsReducer = (state = initialState, action) => {
                 ingredientRequest: false,
                 ingredientRequestFiled: true
             }
-        case SET_COUNT_INGREDIENT:
+        case ADD_COUNT_INGREDIENT:
             return {
                 ...state,
-                ingredients: state.ingredients.map((i) => (i._id === action.payload._id) ? {...i, count: action.payload.count} : i)
+                ingredients: state.ingredients.map((i) => (i._id === action.payload._id) ? {...i, count: isNaN(i.count) ? 1 : i.count+1} : i)
+            }
+        case DELETE_COUNT_INGREDIENT:
+            return {
+                ...state,
+                ingredients: state.ingredients.map((i) => (i._id === action.payload._id) ? {...i, count: i.count > 1 ? i.count-1: null} : i)
             }
 
 
