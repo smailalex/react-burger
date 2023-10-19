@@ -23,20 +23,20 @@ const Tabs = () => {
         <>
             <nav className={style.tabswr}>
                 {categoryArr.map((i, index) =>
-                    <Tab value={i.name} key={index} active={current === i.name}>
+                    <Tab value={i.name} key={i.name} active={current === i.name}>
                         {i.value}
                     </Tab>
                 )}
             </nav>
 
-            <div className={`pl-4 pr-4 ${style.listWr}`}>
+            <div className={`pl-4 pr-4 ${style.listWrMain}`}>
                 {categoryArr.map((item, index) =>
-                        <>
+                        <div key={item.name}  className={style.listWrItems}>
                             <p className="{`text text_type_main-medium mt-10`}" style={{ width: '100%' }}  >
                                 {item.value}
                             </p>
                             {ingredients.map((ingredient) => ingredient.type === item.name ? <Ingredient ingredient={ingredient} key={ingredient._id}/> : null)}
-                        </>
+                        </div>
 
                 )}
 

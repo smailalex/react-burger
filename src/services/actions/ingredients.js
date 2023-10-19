@@ -5,6 +5,7 @@ export const GET_INGREDIENTS_REQUEST_FILED = 'INGREDIENTS_REQUEST_FILED';
 export const ADD_COUNT_INGREDIENT = 'ADD_COUNT_INGREDIENT';
 export const DELETE_COUNT_INGREDIENT = 'DELETE_COUNT_INGREDIENT';
 export const DELETE_ALL_COUNTS_INGREDIENTS = 'DELETE_ALL_COUNTS_INGREDIENTS';
+export const SET_COUNT_BUN = 'SET_COUNT_BUN';
 
 export function getIngredients() {
     return function(dispatch) {

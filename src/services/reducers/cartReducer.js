@@ -9,7 +9,11 @@ import {
 
 const initialState = {
     cart: [],
-    bun: null,
+    bun: {
+        text: 'Добавьте булку',
+        price: 0,
+        empty: true
+    },
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -19,7 +23,7 @@ export const cartReducer = (state = initialState, action) => {
         case ADD_INGREDIENT:
             return {
                 ...state,
-                cart: [...state.cart, {...action.ingredient, key: uuidv4()}]
+                cart: [...state.cart, action.payload]
             }
         case DELETE_INGREDIENT:
             //console.log(action.payload)

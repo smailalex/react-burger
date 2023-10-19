@@ -13,8 +13,6 @@ const Ingredient = ({ ingredient}) => {
     item: ingredient
   });
 
-  //const [visibleModal, setVisibleModal] = React.useState(false)
-  //const [ingredientDetailsData, setIngredientDetailsData] = React.useState(false)
   const ingredientDetailsDataSelector = (state) => state.ingredientModal.modalData;
   const ingredientDetailsData = useSelector(ingredientDetailsDataSelector)
   const dispatch = useDispatch();

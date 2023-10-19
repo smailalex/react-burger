@@ -8,7 +8,7 @@ export function ConstructorElementWrapper({item, index, moveConstructorIngredien
     const ref = useRef(null)
     useEffect(() => {
         console.log('ConstructorElementWrapper rend ')
-    }, []);
+    }, );
     const [{ handlerId }, drop] = useDrop({
         accept: ['main', 'sauce'],
         collect(monitor) {
@@ -20,8 +20,8 @@ export function ConstructorElementWrapper({item, index, moveConstructorIngredien
             if (!ref.current) {
                 return
             }
-            const dragIndex = index
-            const hoverIndex = 1//index
+            const dragIndex = item.index
+            const hoverIndex = index//index
             // Don't replace items with themselves
             if (dragIndex === hoverIndex) {
                 return

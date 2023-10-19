@@ -4,7 +4,8 @@ import {
     GET_INGREDIENTS_REQUEST_SUCCESS,
     ADD_COUNT_INGREDIENT,
     DELETE_COUNT_INGREDIENT,
-    DELETE_ALL_COUNTS_INGREDIENTS
+    DELETE_ALL_COUNTS_INGREDIENTS,
+    SET_COUNT_BUN
 } from '../actions/ingredients';
 
 const initialState = {
@@ -57,6 +58,14 @@ export const ingredientsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ingredients: state.ingredients.map((i) => ({...i, count: null}))
+            }
+        case SET_COUNT_BUN:
+            return {
+                ...state,
+                ingredients: state.ingredients.map((i) => (i.type === "bun" ?
+                    i._id === action.payload._id ? {...i, count: 2} : {...i, count: null}
+                    : i
+                ))
             }
 
 

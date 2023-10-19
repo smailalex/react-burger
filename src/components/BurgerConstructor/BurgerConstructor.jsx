@@ -9,15 +9,18 @@ import Modal from '../Modal/Modal';
 import {useDispatch, useSelector} from "react-redux";
 import {DELETE_INGREDIENT, ADD_INGREDIENT, SET_INGREDIENT_BUN, SET_CART, ERASE_CART} from "../../services/actions/cart";
 import {makeOrder} from "../../services/actions/order";
+import emptyImage from '../../images/empty_img.png'
+
 import {
     ADD_COUNT_INGREDIENT,
     DELETE_ALL_COUNTS_INGREDIENTS,
-    DELETE_COUNT_INGREDIENT
+    DELETE_COUNT_INGREDIENT, SET_COUNT_BUN
 } from "../../services/actions/ingredients";
 import {ConstructorElementWrapper} from "../ConstructorElementWrapper/ConstructorElementWrapper";
+import {v4 as uuidv4} from "uuid";
 
 function BurgerConstructor(prop) {
-    const {cart , bun } = useSelector(state => state.cart);
+    const {cart, bun} = useSelector(state => state.cart);
     const firstBun = useSelector(state => state.ingredients.ingredients[0]);
     const dispatch = useDispatch();
     const [visibleModal, setVisibleModal] = React.useState(false)
@@ -27,7 +30,7 @@ function BurgerConstructor(prop) {
     //const [orderError, setOrderError] = React.useState({isError: false, message: 'defaul error text'})
 
     useEffect(() => {
-        dispatch({type: SET_INGREDIENT_BUN, payload: firstBun})
+        //dispatch({type: SET_INGREDIENT_BUN, payload: firstBun})
         dispatchOrderSum({type: 'count'})
     }, []);
 
@@ -39,11 +42,13 @@ function BurgerConstructor(prop) {
 
         drop(ingredient) {
             if ((['main', 'sauce'].includes(ingredient.type))) {
-                dispatch({type: ADD_INGREDIENT, ingredient})
+                dispatch({type: ADD_INGREDIENT, payload: {...ingredient, key: uuidv4()}})
                 dispatch({type: ADD_COUNT_INGREDIENT, payload: {_id: ingredient._id}})
             }
             if (ingredient.type === 'bun') {
-                dispatch({type: SET_INGREDIENT_BUN, payload: ingredient})
+                dispatch({type: SET_INGREDIENT_BUN, payload: {...ingredient, key: uuidv4()}})
+                dispatch({type: SET_COUNT_BUN, payload: {_id: ingredient._id}})
+
             }
             dispatchOrderSum({type: 'count'})
 
@@ -60,13 +65,14 @@ function BurgerConstructor(prop) {
     }
 
     const handleRemoveIngridien = (ingredient) => {
-        console.log(ingredient._id)
+        //console.log(ingredient._id)
         dispatch({type: DELETE_COUNT_INGREDIENT, payload: {_id: ingredient._id}})
         dispatch({type: DELETE_INGREDIENT, payload: ingredient.key})
 
         dispatchOrderSum({type: 'count'})
     }
     const handleOrderMake = () => {
+        if (cart.length < 1 && bun.empty) return;
         const orderIngridientsWithoutBun = cart.map(i => i._id)
         const orderPostData = {ingredients: [bun._id, bun._id, ...orderIngridientsWithoutBun]};
         dispatch(makeOrder(orderPostData));
@@ -93,17 +99,17 @@ function BurgerConstructor(prop) {
                 index={index}
                 item={i}
                 handleRemoveIngredien={handleRemoveIngridien}
-                moveConstructorIngredient={moveConstructorIngredient} />
+                moveConstructorIngredient={moveConstructorIngredient}/>
         )
-    }, )
+    })
 
     return (
         <>
             <section className={style.section}>
                 <div className={`${style.listWr} ${isHover && style.onHover}`} ref={dropTarget}>
                     {
-                        bun &&
-                        <ConstructorElement
+                        !bun.empty ?
+                        (<ConstructorElement
                             type="top"
                             isLocked={true}
                             text={bun.name + ' (верх)'}
@@ -112,24 +118,47 @@ function BurgerConstructor(prop) {
                             key={bun._id + "top"}
                             //handleClose={() => handleRemoveIngridien(bun._id)}
 
-                        />
-
+                        />)
+                        : (<ConstructorElement
+                                type="top"
+                                isLocked={true}
+                                text={bun.text}
+                                price={bun.price}
+                                thumbnail={emptyImage}
+                            />)
                     }
 
                     <div className={`${style.ingridientsWr} ${style.listWr}`}>
-                        {cart.map((i, index) => renderConstructorElementWrapper(i, index)
-                        )}
+                        {cart.length > 0 ?
+                            cart.map((i, index) => renderConstructorElementWrapper(i, index))
+                            :
+                            <ConstructorElement
+                                type="main"
+                                isLocked={true}
+                                text={'добавьте ингредиенты'}
+                                price={bun.price}
+                                thumbnail={emptyImage}
+                            />
+                        }
                     </div>
                     {
-                        bun &&
-                        <ConstructorElement
-                            type="bottom"
-                            isLocked={true}
-                            text={bun.name + ' (низ)'}
-                            price={bun.price}
-                            thumbnail={bun.image}
-                            key={bun._id + "bottom"}
-                        />
+
+                        !bun.empty ?
+                            (<ConstructorElement
+                                type="bottom"
+                                isLocked={true}
+                                text={bun.name + ' (низ)'}
+                                price={bun.price}
+                                thumbnail={bun.image}
+                                key={bun._id + "bottom"}
+                            />)
+                            : (<ConstructorElement
+                                type="bottom"
+                                isLocked={true}
+                                text={bun.text}
+                                price={bun.price}
+                                thumbnail={emptyImage}
+                            />)
 
                     }
                 </div>
