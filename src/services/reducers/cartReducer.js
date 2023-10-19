@@ -34,11 +34,14 @@ export const cartReducer = (state = initialState, action) => {
 
         case SET_CART:
             //console.log(action.payload)
-            const drag = state.cart[action.payload.dragIndex];
-            const hovered = state.cart[action.payload.hoverIndex];
+            //const drag = state.cart[action.payload.dragIndex];
+            //const hovered = state.cart[action.payload.hoverIndex];
             const cart = state.cart.slice()
-            cart.splice(action.payload.dragIndex, 1, hovered)
-            cart.splice(action.payload.hoverIndex, 1, drag)
+            cart.splice(
+                action.payload.hoverIndex,
+                0,
+                cart.splice(action.payload.dragIndex, 1)[0]
+            );
             return {
                 ...state,
                 cart: cart
