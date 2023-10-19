@@ -3,7 +3,8 @@ import {
     ADD_INGREDIENT,
     DELETE_INGREDIENT,
     SET_INGREDIENT_BUN,
-    SET_CART
+    SET_CART,
+    ERASE_CART,
 } from '../actions/cart';
 
 const initialState = {
@@ -21,7 +22,7 @@ export const cartReducer = (state = initialState, action) => {
                 cart: [...state.cart, {...action.ingredient, key: uuidv4()}]
             }
         case DELETE_INGREDIENT:
-            console.log(action.payload)
+            //console.log(action.payload)
             return {
                 ...state,
                 cart: state.cart.filter((i) => action.payload !== i.key)
@@ -43,7 +44,7 @@ export const cartReducer = (state = initialState, action) => {
                 ...state,
                 bun: action.payload
             }
-
-
+        case ERASE_CART:
+            return initialState
     }
 } 

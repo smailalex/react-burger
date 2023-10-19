@@ -7,9 +7,13 @@ import {useDrop} from 'react-dnd';
 
 import Modal from '../Modal/Modal';
 import {useDispatch, useSelector} from "react-redux";
-import {DELETE_INGREDIENT, ADD_INGREDIENT, SET_INGREDIENT_BUN, SET_CART} from "../../services/actions/cart";
+import {DELETE_INGREDIENT, ADD_INGREDIENT, SET_INGREDIENT_BUN, SET_CART, ERASE_CART} from "../../services/actions/cart";
 import {makeOrder} from "../../services/actions/order";
-import {ADD_COUNT_INGREDIENT, DELETE_COUNT_INGREDIENT} from "../../services/actions/ingredients";
+import {
+    ADD_COUNT_INGREDIENT,
+    DELETE_ALL_COUNTS_INGREDIENTS,
+    DELETE_COUNT_INGREDIENT
+} from "../../services/actions/ingredients";
 import {ConstructorElementWrapper} from "../ConstructorElementWrapper/ConstructorElementWrapper";
 
 function BurgerConstructor(prop) {
@@ -67,6 +71,11 @@ function BurgerConstructor(prop) {
         const orderPostData = {ingredients: [bun._id, bun._id, ...orderIngridientsWithoutBun]};
         dispatch(makeOrder(orderPostData));
         setVisibleModal(true)
+        dispatch({type: ERASE_CART})
+        dispatch({type: SET_INGREDIENT_BUN, payload: firstBun})
+        dispatch({type: DELETE_ALL_COUNTS_INGREDIENTS})
+        dispatchOrderSum({type: 'count'})
+
     }
 
     const moveConstructorIngredient = ((dragIndex, hoverIndex) => {
