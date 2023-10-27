@@ -15,6 +15,8 @@ export const recoveryDataSelector = createSelector(
     recoveryProfileSelector,
     (recoveryRequest) => ({
         success: recoveryRequest.recoveryRequestSuccess,
+        resetRequestSuccess: recoveryRequest.resetRequestSuccess,
+        resetRequestSuccessFiled: recoveryRequest.resetRequestSuccessFiled,
         filed: recoveryRequest.recoveryRequestFiled,
         message: recoveryRequest.message,
 

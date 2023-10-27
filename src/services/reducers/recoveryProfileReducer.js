@@ -10,6 +10,8 @@ const initialState = {
     message: null,
     recoveryRequestFiled: false,
     recoveryRequestSuccess: false,
+    resetRequestSuccess: false,
+    resetRequestSuccessFiled: false,
 
 };
 export const recoveryProfileReducer = (state = initialState, action) => {
@@ -32,13 +34,13 @@ export const recoveryProfileReducer = (state = initialState, action) => {
         case POST_PASSWORD_RESET_BY_CODE:
             return {
                 ...state,
-                recoveryRequestSuccess: true,
+                resetRequestSuccess: true,
                 message: action.payload
             }
         case POST_PASSWORD_RESET_BY_CODE_FILED:
             return {
                 ...initialState,
-                recoveryRequestFiled: true
+                resetRequestSuccessFiled: true
             }
 
 

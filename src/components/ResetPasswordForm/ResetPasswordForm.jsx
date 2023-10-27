@@ -3,27 +3,32 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import style from "./ResetPasswordForm.module.css";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {userDataSelector} from "../../selectors";
+import {recoveryDataSelector, userDataSelector} from "../../selectors";
 import {getUserProfile} from "../../services/actions/user";
 import {ResetPasswordRequest} from "../../services/actions/recoveryProfile";
 
 export function ResetPasswordForm() {
     let {userProfileRequestSuccess, userProfileRequestFiled} = useSelector(userDataSelector)
+    let {resetRequestSuccess, resetRequestSuccessFiled} = useSelector(recoveryDataSelector)
 
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch()
     const [isLoading, setIsLoading] = useState(true)
-    const [codeError, setCodeError] = useState(false);
+    const [tokenError, setTokenError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [inputValue, setInputValue] = useState({
-        "code": "",
+        "token": "",
         "password": ""
     });
 
     useEffect(() => {
         dispatch(getUserProfile())
     }, [dispatch]);
+
+    useEffect(() => {
+        if(resetRequestSuccess) navigate("/login")
+    }, [resetRequestSuccess]);
 
     useEffect(() => {
         if (userProfileRequestSuccess) {
@@ -37,8 +42,8 @@ export function ResetPasswordForm() {
 
     function handleResetPasswordRequest() {
         if (inputValue.password.length < 5) return setPasswordError(true);
-        if (inputValue.code.length < 1) return setCodeError(true);
-        dispatch(ResetPasswordRequest({...inputValue, token : inputValue.code}))
+        if (inputValue.token.length < 1) return setTokenError(true);
+        dispatch(ResetPasswordRequest(inputValue))
     }
     function handleChangeInput(e) {
         setInputValue({...inputValue, [e.target.name]: e.target.value})
@@ -67,12 +72,12 @@ export function ResetPasswordForm() {
                 <Input
                     type={'text'}
                     placeholder={'Введите код из письма'}
-                    name={'code'}
-                    error={codeError}
+                    name={'token'}
+                    error={tokenError}
                     errorText={'Ошибка'}
                     size={'default'}
                     extraClass="pb-6"
-                    value={inputValue.code}
+                    value={inputValue.token}
                     onChange={handleChangeInput}
 
                 />
