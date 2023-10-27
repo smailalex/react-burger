@@ -26,7 +26,7 @@ const Tabs = () => {
         } else if (inViewMain) {
             setCurrent('main')
         }
-        console.log(current)
+        //console.log(current)
     }, [inViewBun, inViewSauce, inViewMain]);
 
     const categoryArr = [

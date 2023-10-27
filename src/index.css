@@ -7,4 +7,126 @@ code {
     monospace;
 }
 
+/* Контейнер flexbox */
+.flexContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+/* Основные выравнивающие классы */
+.justifyStart {
+  justify-content: flex-start;
+}
+
+.justifyEnd {
+  justify-content: flex-end;
+}
+
+.justifyCenter {
+  justify-content: center;
+}
+
+.justifyBetween {
+  justify-content: space-between;
+}
+
+.justifyAround {
+  justify-content: space-around;
+}
+
+.alignStart {
+  align-items: flex-start;
+}
+
+.alignEnd {
+  align-items: flex-end;
+}
+
+.alignCenter {
+  align-items: center;
+}
+
+.alignBaseline {
+  align-items: baseline;
+}
+
+.alignStretch {
+  align-items: stretch;
+}
+
+/* Классы для изменения направления и порядка элементов */
+.flexRow {
+  flex-direction: row;
+}
+
+.flexRowReverse {
+  flex-direction: row-reverse;
+}
+
+.flexColumn {
+  flex-direction: column;
+}
+
+.flexColumnReverse {
+  flex-direction: column-reverse;
+}
+
+.flexWrap {
+  flex-wrap: wrap;
+}
+
+.flexNowrap {
+  flex-wrap: nowrap;
+}
+
+.flexReverse {
+  flex-direction: row-reverse;
+}
+
+.flexOrder1 {
+  order: 1;
+}
+
+.flexOrder2 {
+  order: 2;
+}
+
+/* Классы для управления размерами элементов */
+.flexGrow1 {
+  flex-grow: 1;
+}
+
+.flexShrink0 {
+  flex-shrink: 0;
+}
+
+/* Другие полезные классы */
+.flex1 {
+  flex: 1;
+}
+
+.flexAuto {
+  flex: auto;
+}
+
+.flexNone {
+  flex: none;
+}
+/* Выравнивание по центру (по горизонтали и вертикали) */
+.ContentCenterHorizontal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Элементы, которые не должны изменять размеры flex-родителя */
+.noFlex {
+  flex: 0 0 auto;
+}
+.ContentCenterVertical{
+  height: calc(100vh - 10vh) ;
+}
 

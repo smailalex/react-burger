@@ -6,7 +6,7 @@ import AppHeader from '../AppHeader/AppHeader';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import {useDispatch, useSelector} from "react-redux";
-import {GET_INGREDIENTS_REQUEST_FILED, getIngredients} from "../../services/actions/ingredients";
+import {getIngredients} from "../../services/actions/ingredients";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import { DndProvider } from 'react-dnd';
 const API = 'https://norma.nomoreparties.space/api/ingredients';
