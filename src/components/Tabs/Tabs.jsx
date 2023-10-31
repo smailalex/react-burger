@@ -6,11 +6,13 @@ import Ingredient from '../Ingredient/Ingredient';
 import {useInView} from 'react-intersection-observer';
 
 import {useSelector} from "react-redux";
+import {ingredientDataSelector} from "../../selectors";
 
 
 const Tabs = () => {
 
-    const {ingredients} = useSelector(state => state.ingredients);
+    const {ingredients} = useSelector(ingredientDataSelector);
+
 
     const [current, setCurrent] = React.useState('bun');
 

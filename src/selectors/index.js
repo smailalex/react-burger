@@ -27,8 +27,10 @@ export const recoveryDataSelector = createSelector(
 export const ingredientDataSelector = createSelector(
     ingredientSelector,
     (ingredientRequest) => ({
+        ingredients: ingredientRequest.ingredients,
         ingredientRequest: ingredientRequest.ingredientRequest,
         ingredientRequestFiled: ingredientRequest.ingredientRequestFiled,
+        ingredientRequestSuccess: ingredientRequest.ingredientRequestSuccess
 
 
     })

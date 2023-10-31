@@ -209,9 +209,14 @@ export function getUserProfile() {
         };
         fetch(GET_SET_USER_DATA_API, requestOptions)
             .then(response => {
-                if ([403, 200].includes(response.status)) return response.json()
+                if ([403, 200].includes(response.status)) {
+                    return response.json();
+                }
+                if ([401].includes(response.status)) {
+                    return response.json();
+                }
                 //console.log(response.status)
-                //return Promise.reject(`Ошибка ${response.status}`)
+                return Promise.reject(`Ошибка ${response.status}`)
             })
             .then(json => {
                 if (json.success) {
@@ -226,11 +231,14 @@ export function getUserProfile() {
                     makeRefreshAccessToken(getCookie('refreshToken')).then(() => {
                         getUserProfile();
                     })
-
-
+                }else if(!json.success){
+                    console.log(json.message)
+                    dispatch({
+                        type: GET_USER_PROFILE_FILED
+                    });
                 }
             })
-            .catch((e) => {
+            .catch((e, json) => {
                 //console.log('Error', e)
                 dispatch({
                     type: GET_USER_PROFILE_FILED
@@ -260,11 +268,13 @@ export function makeProfileUpdate(updatePostData) {
         };
         fetch(GET_SET_USER_DATA_API, requestOptions)
             .then(response => {
-                if ([200].includes(response.status && response.ok)) return response.json()
-                //console.log(response.status)
+                if (response.ok) {
+                    return response.json()
+                }
                 //return Promise.reject(`Ошибка ${response.status}`)
             })
             .then(json => {
+                //console.log(json)
                 if (json.success) {
                     //setCookie('token' , json.accessToken, {expires: 60*60*24})
                     dispatch({

@@ -1,6 +1,5 @@
 import React from "react";
 import style from "./IngredientDetails.module.css";
-import { Typography } from '@ya.praktikum/react-developer-burger-ui-components';
 import Types from '../../utils/types';
 
 

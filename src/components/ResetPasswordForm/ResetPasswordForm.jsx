@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {recoveryDataSelector, userDataSelector} from "../../selectors";
 import {getUserProfile} from "../../services/actions/user";
 import {ResetPasswordRequest} from "../../services/actions/recoveryProfile";
+import {useForm} from "../../hooks/useForm";
 
 export function ResetPasswordForm() {
     const {userProfileRequestSuccess, userProfileRequestFiled} = useSelector(userDataSelector)
@@ -17,7 +18,7 @@ export function ResetPasswordForm() {
     const [isLoading, setIsLoading] = useState(true)
     const [tokenError, setTokenError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
-    const [inputValue, setInputValue] = useState({
+    const {values, handleChange, setValues} = useForm({
         "token": "",
         "password": ""
     });
@@ -42,14 +43,12 @@ export function ResetPasswordForm() {
 
     function handleResetPasswordRequest(e) {
         e.preventDefault();
-        if (inputValue.password.length < 5) return setPasswordError(true);
-        if (inputValue.token.length < 1) return setTokenError(true);
-        dispatch(ResetPasswordRequest(inputValue))
+        if (values.password.length < 5) return setPasswordError(true);
+        if (values.token.length < 1) return setTokenError(true);
+        dispatch(ResetPasswordRequest(values))
     }
 
-    function handleChangeInput(e) {
-        setInputValue({...inputValue, [e.target.name]: e.target.value})
-    }
+
 
     return (
         isLoading ? <p>loading...</p> :
@@ -67,20 +66,20 @@ export function ResetPasswordForm() {
                         errorText={'Ошибка ввода пароля, требуется больше 5 символов'}
                         size={'default'}
                         extraClass=" pb-6"
-                        value={inputValue.password}
-                        onChange={handleChangeInput}
+                        value={values.password}
+                        onChange={handleChange}
 
                     />
                     <Input
                         type={'text'}
-                        placeholder={'Введите код из письма'}
+                        placeholder={'Введите token код из письма'}
                         name={'token'}
                         error={tokenError}
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="pb-6"
-                        value={inputValue.token}
-                        onChange={handleChangeInput}
+                        value={values.token}
+                        onChange={handleChange}
 
                     />
 

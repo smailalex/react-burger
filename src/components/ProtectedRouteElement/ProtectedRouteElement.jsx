@@ -18,10 +18,10 @@ export const ProtectedRouteElement = ({element}) => {
     }, [location]);
 
     useEffect(() => {
-        dispatch(getUserProfile())
+
+        (!location.state.from === '/profile') && dispatch(getUserProfile())
     }, [dispatch]);
 
-    //TODO: ДОбаввить проверку по кукам для компонентов ['ResetPassword','ForgotPassword' ]
     return (
         user && userProfileRequestSuccess
             ? element
@@ -30,6 +30,5 @@ export const ProtectedRouteElement = ({element}) => {
                 : <Navigate to="/login" replace state={{form: location}}/>
 
     )
-
 
 }

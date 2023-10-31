@@ -7,10 +7,16 @@ import {useEffect, useState} from "react";
 import {isEmailValid} from "../../utils/validation";
 import {makeLogin, makeLogout, makeProfileUpdate} from "../../services/actions/user";
 import {getCookie} from "../../utils/cookies";
+import {useForm} from "../../hooks/useForm";
 
 export function ProfileForm() {
     const navigate = useNavigate();
     const location = useLocation();
+    const {values, handleChange : handleChangeInput, setValues} = useForm({
+        "name": "",
+        "email": "",
+        "password": ""
+    });
     const {user, logoutRequestSuccess, userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
     const dispatch = useDispatch()
     const [nameError, setNameError] = useState(false);
@@ -18,31 +24,28 @@ export function ProfileForm() {
     const [passwordError, setPasswordError] = useState(false);
     const [profileChanged, setProfileChanged] = useState(false)
 
-    const [inputValue, setInputValue] = useState({
-        "name": "",
-        "email": "",
-        "password": ""
-    });
+  
 
     useEffect(() => {
-        setInputValue({...user, password: ""})
+        setValues({...user, password: ""})
         //console.log(location)
-    }, [])
+    }, [user])
 
     function handleUserProfileUpdate(e) {
         e.preventDefault();
         setNameError(false)
         setEmailError(false)
         setPasswordError(false)
-        if (!isEmailValid(inputValue.email)) return setEmailError(true);
-        if (inputValue.password.length < 5) return setPasswordError(true);
-        //console.log('handleLogin', inputValue)
-        dispatch(makeProfileUpdate(inputValue))
+        if (!isEmailValid(values.email)) return setEmailError(true);
+        if (values.password.length < 5) return setPasswordError(true);
+        //console.log('handleLogin', values)
+        dispatch(makeProfileUpdate(values))
+        //setValues({...user, password: ""})
     }
 
     function handleUserProfileUpdateCancel() {
 
-        setInputValue({...user, password: ""})
+        setValues({...user, password: ""})
         setNameError(false)
         setEmailError(false)
         setPasswordError(false)
@@ -59,12 +62,10 @@ export function ProfileForm() {
     }
 
 
-    function handleChangeInput(e) {
+   function handleChange(e){
         setProfileChanged(true)
-        setInputValue({...inputValue, [e.target.name]: e.target.value})
-        //console.log(refMail)
-    }
-
+        handleChangeInput(e)
+   }
 
     return (
         <section className={`${style.wr} `}>
@@ -92,8 +93,8 @@ export function ProfileForm() {
                     size={'default'}
                     extraClass="pb-6"
                     icon={'EditIcon'}
-                    value={inputValue.name}
-                    onChange={handleChangeInput}
+                    value={values.name}
+                    onChange={handleChange}
                 />
                 <Input
                     type={'text'}
@@ -104,8 +105,8 @@ export function ProfileForm() {
                     size={'default'}
                     extraClass="pb-6"
                     icon={'EditIcon'}
-                    value={inputValue.email}
-                    onChange={handleChangeInput}
+                    value={values.email}
+                    onChange={handleChange}
                 />
                 <Input
                     type={'password'}
@@ -116,8 +117,8 @@ export function ProfileForm() {
                     errorText={'Ошибка - такой пароль сохранить нелья, от 6 символов'}
                     size={'default'}
                     extraClass=" pb-6"
-                    value={inputValue.password}
-                    onChange={handleChangeInput}
+                    value={values.password}
+                    onChange={handleChange}
                 />
 
                 {profileChanged && <div className={style.wr}>

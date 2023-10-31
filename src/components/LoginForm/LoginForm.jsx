@@ -6,9 +6,14 @@ import {getUserProfile, LOGIN_REQUEST, makeLogin} from "../../services/actions/u
 import {useEffect, useRef, useState} from "react";
 import {isEmailValid} from "../../utils/validation";
 import {userDataSelector} from "../../selectors";
+import {useForm} from "../../hooks/useForm";
 
 export function LoginForm() {
     const {userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
+    const {values, handleChange, setValues} = useForm({
+        "email": "",
+        "password": ""
+    });
 
     const dispatch = useDispatch()
     const [emailError, setEmailError] = useState(false);
@@ -16,10 +21,8 @@ export function LoginForm() {
     const [isLoading, setIsLoading] = useState(true)
     const location = useLocation();
     const navigate = useNavigate();
-    const [inputValue, setInputValue] = useState({
-        "email": "",
-        "password": ""
-    });
+
+
     useEffect(() => {
         dispatch(getUserProfile())
     }, [dispatch]);
@@ -34,18 +37,17 @@ export function LoginForm() {
 
     }, [userProfileRequestSuccess, userProfileRequestFiled]);
 
+
+
     function handleLogin(e) {
         e.preventDefault();
         setEmailError(false)
         setPasswordError(false)
-        if (!isEmailValid(inputValue.email)) return setEmailError(true);
-        if (inputValue.password.length < 5) return setPasswordError(true);
-        dispatch(makeLogin(inputValue))
+        if (!isEmailValid(values.email)) return setEmailError(true);
+        if (values.password.length < 5) return setPasswordError(true);
+        dispatch(makeLogin(values))
     }
 
-    function handleChangeInput(e) {
-        setInputValue({...inputValue, [e.target.name]: e.target.value})
-    }
 
     return (
         isLoading ? <p>loading...</p> :
@@ -62,8 +64,8 @@ export function LoginForm() {
                         errorText={'Ошибка ввода email'}
                         size={'default'}
                         extraClass="pt-6 pb-6"
-                        value={inputValue.email}
-                        onChange={handleChangeInput}
+                        value={values.email}
+                        onChange={handleChange}
                     />
                     <Input
                         type={'password'}
@@ -74,8 +76,8 @@ export function LoginForm() {
                         errorText={'Ошибка ввода пароля, требуется больше 5 символов'}
                         size={'default'}
                         extraClass="pb-6"
-                        value={inputValue.password}
-                        onChange={handleChangeInput}
+                        value={values.password}
+                        onChange={handleChange}
                     />
                     <Button htmlType="submit" type="primary" size="medium" extraClass="mb-20" >
                         Войти

@@ -11,6 +11,7 @@ import {
 const initialState = {
     ingredients: [],
     ingredientRequest: false,
+    ingredientRequestSuccess: false,
     ingredientRequestFiled: false,
 };
 export const ingredientsReducer = (state = initialState, action) => {
@@ -27,6 +28,7 @@ export const ingredientsReducer = (state = initialState, action) => {
                 ...state,
                 ingredients: action.payload,
                 ingredientRequest: false,
+                ingredientRequestSuccess: true,
                 ingredientRequestFiled: false,
 
             }
@@ -34,6 +36,7 @@ export const ingredientsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ingredientRequest: false,
+                ingredientRequestSuccess: false,
                 ingredientRequestFiled: true
             }
         case ADD_COUNT_INGREDIENT:

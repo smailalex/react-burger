@@ -7,9 +7,12 @@ import {useDispatch, useSelector} from "react-redux";
 import {recoveryByMail} from "../../services/actions/recoveryProfile";
 import {recoveryDataSelector, userDataSelector} from "../../selectors";
 import {getUserProfile} from "../../services/actions/user";
+import {useForm} from "../../hooks/useForm";
 
 export function ForgotPasswordForm() {
-    const [email, setEmail] = useState('')
+    const {values, handleChange, setValues} = useForm({
+        "email": "",
+    });
     const [emailError, setEmailError] = useState(false);
     const dispatch = useDispatch()
     const [isLoading, setIsLoading] = useState(true)
@@ -18,6 +21,7 @@ export function ForgotPasswordForm() {
 
     const navigate = useNavigate();
     const location = useLocation();
+
 
     useEffect(() => {
         dispatch(getUserProfile())
@@ -40,13 +44,10 @@ export function ForgotPasswordForm() {
 
     function handleRecoveryByMail(e) {
         e.preventDefault();
-        if (!isEmailValid(email)) return setEmailError(true);
-        dispatch(recoveryByMail({email}));
+        if (!isEmailValid(values.email)) return setEmailError(true);
+        dispatch(recoveryByMail(values));
     }
 
-    function handleChangeInput(e) {
-        setEmail(e.target.value)
-    }
 
 
     return (
@@ -59,14 +60,15 @@ export function ForgotPasswordForm() {
                     <Input
                         type={'text'}
                         placeholder={'E-mail'}
-                        name={'login'}
+                        name={'email'}
                         error={emailError}
                         errorText={'Ошибка'}
                         size={'default'}
                         extraClass="pb-6"
-                        value={email}
-                        onChange={handleChangeInput}
+                        value={values.email}
+                        onChange={handleChange}
                     />
+
                     {success && message && <p>{message}</p>}
                     <Button htmlType="submit" type="primary" size="medium" extraClass="mb-20">
                         Восстановить

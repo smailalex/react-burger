@@ -4,8 +4,9 @@ import style from "./RegisterForm.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {isEmailValid} from "../../utils/validation";
-import {makeProfileUpdate, makeRegisterUser} from "../../services/actions/user";
+import {getUserProfile, makeProfileUpdate, makeRegisterUser} from "../../services/actions/user";
 import {userDataSelector} from "../../selectors";
+import {useForm} from "../../hooks/useForm";
 
 export function RegisterForm() {
     const dispatch = useDispatch()
@@ -17,13 +18,14 @@ export function RegisterForm() {
 
     const location = useLocation();
     const navigate = useNavigate();
-
-    const [inputValue, setInputValue] = useState({
+    const {values, handleChange, setValues} = useForm({
         "name": "",
         "email": "",
         "password": ""
     });
-
+    useEffect(() => {
+        dispatch(getUserProfile())
+    }, [dispatch]);
 
     useEffect(() => {
         if (userProfileRequestSuccess) {
@@ -41,17 +43,14 @@ export function RegisterForm() {
         setEmailError(false)
         setPasswordError(false)
 
-        if (!isEmailValid(inputValue.email)) return setEmailError(true);
-        if (inputValue.password.length < 5) return setPasswordError(true);
-        if (inputValue.name.length < 3) return setNameError(true);
-        console.log('handleUserProfileCreate', inputValue)
-        dispatch(makeRegisterUser(inputValue))
+        if (!isEmailValid(values.email)) return setEmailError(true);
+        if (values.password.length < 5) return setPasswordError(true);
+        if (values.name.length < 3) return setNameError(true);
+        console.log('handleUserProfileCreate', values)
+        dispatch(makeRegisterUser(values))
     }
 
-    function handleChangeInput(e) {
-        return setInputValue({...inputValue, [e.target.name]: e.target.value})
-        //console.log(refMail)
-    }
+
 
     return (
         isLoading ? <p>loading...</p> :
@@ -68,8 +67,8 @@ export function RegisterForm() {
                         errorText={'Ошибка имя от 3 символов'}
                         size={'default'}
                         extraClass="pt-6 pb-6"
-                        value={inputValue.name}
-                        onChange={handleChangeInput}
+                        value={values.name}
+                        onChange={handleChange}
                     />
                     <Input
                         type={'text'}
@@ -79,8 +78,8 @@ export function RegisterForm() {
                         errorText={'Ошибка, логин это email не подходит'}
                         size={'default'}
                         extraClass="pb-6"
-                        value={inputValue.email}
-                        onChange={handleChangeInput}
+                        value={values.email}
+                        onChange={handleChange}
                     />
                     <Input
                         type={'password'}
@@ -91,8 +90,8 @@ export function RegisterForm() {
                         errorText={'Ошибка - такой пароль сохранить нелья, от 6 символов'}
                         size={'default'}
                         extraClass=" pb-6"
-                        value={inputValue.password}
-                        onChange={handleChangeInput}
+                        value={values.password}
+                        onChange={handleChange}
                     />
 
                     <Button htmlType="submit" type="primary" size="medium" extraClass="mb-20"
