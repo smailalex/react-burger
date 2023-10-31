@@ -6,6 +6,7 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {getIngredients} from "../services/actions/ingredients";
 import {SET_MODAL_DATA} from "../services/actions/ingredientModal";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
+import {HomePage} from "./HomePage";
 
 export const IngredientID = () => {
     const [ingredient, setIngredient] = useState({});
@@ -13,15 +14,17 @@ export const IngredientID = () => {
     const {
         ingredientRequest, ingredientRequestSuccess, ingredientRequestFiled, ingredients
     } = useSelector(ingredientDataSelector);
+    const ingredientDetailsDataSelector = (state) => state.ingredientModal.modalData;
+    const ingredientDetailsData = useSelector(ingredientDetailsDataSelector)
     const location = useLocation();
     const {id} = useParams();
 
 
     useEffect(() => {
-        //console.log(location)
-        //console.log(navigate)
-        if (id) {
-            dispatch(getIngredients())
+        if (location.state?.form === '/' && location.state?.ingredient) {
+            dispatch({type: SET_MODAL_DATA, payload: location.state?.ingredient})
+        }else {
+            if (id) dispatch(getIngredients());
         }
 
     }, []);
@@ -29,15 +32,16 @@ export const IngredientID = () => {
     useEffect(() => {
         if (ingredientRequestSuccess) {
             setIngredient(ingredients.find(i => i._id = id))
-            if (location.state?.form === '/') {
-                dispatch({type: SET_MODAL_DATA, payload: ingredient})
-            }
+            //console.log(location.state?.ingredient)
+
         }
     }, [ingredientRequestSuccess, ingredient]);
 
-    return (
-        ingredient && ingredientRequestSuccess && location.state?.form === '/' ?
-            <Ingredient ingredient={ingredient} key={ingredient._id}/>
-            : <IngredientDetails ingredient={ingredient}/>
-    )
+    if ( ingredientDetailsData ) {
+        return   <HomePage />
+        }else {
+            return  <IngredientDetails ingredient={ingredient}/>
+        }
+
+
 }

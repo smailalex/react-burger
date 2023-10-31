@@ -7,6 +7,10 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getIngredients} from "../services/actions/ingredients";
 import {ingredientDataSelector} from "../selectors";
+import Modal from "../components/Modal/Modal";
+import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
+import {DELETE_MODAL_DATA} from "../services/actions/ingredientModal";
+import {useNavigate, useParams} from "react-router-dom";
 
 export const  HomePage = () => {
     //const [isDataLoaded, setIsDataLoaded] = React.useState(false)
@@ -14,16 +18,23 @@ export const  HomePage = () => {
     //const [ingredientData, setIngredientData] = React.useState({})
     const [error, setError] = useState({ isError: false, message: '' })
     const dispatch = useDispatch();
-
-
+    const params = useParams();
+    const navigate = useNavigate();
+    const ingredientDetailsDataSelector = (state) => state.ingredientModal.modalData;
+    const ingredientDetailsData = useSelector(ingredientDetailsDataSelector)
     const {ingredientRequest, ingredientRequestFiled} = useSelector(ingredientDataSelector);
+    const handleModalClose = () => {
+        dispatch({type: DELETE_MODAL_DATA})
+        if (params.id){
+            navigate('/')
+        }
+        //setVisibleModal(false)
+    }
 
 
     useEffect(() => {
         dispatch(getIngredients())
     }, [dispatch]);
-
-
 
     return (
             <main className={style.main}>
@@ -35,7 +46,11 @@ export const  HomePage = () => {
                         <DndProvider backend={HTML5Backend}>
                             <BurgerIngredients/>
                             <BurgerConstructor/>
+                            {ingredientDetailsData && <Modal onClose={handleModalClose} >
+                                <IngredientDetails ingredient={ingredientDetailsData} />
+                            </Modal>}
                         </DndProvider>
+
                     </>
                 }
 

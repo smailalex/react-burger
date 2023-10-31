@@ -13,7 +13,7 @@ export const ingredientModalReducer = (state = initialState, action) => {
             }
 
         case DELETE_MODAL_DATA:
-            console.log(action.payload)
+            //console.log(action.payload)
             return {
                 initialState
             }
