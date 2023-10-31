@@ -18,7 +18,6 @@ export const ProtectedRouteElement = ({element}) => {
     }, [location]);
 
     useEffect(() => {
-
         (!location.state.from === '/profile') && dispatch(getUserProfile())
     }, [dispatch]);
 
