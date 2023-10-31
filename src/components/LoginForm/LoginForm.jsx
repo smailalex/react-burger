@@ -8,7 +8,7 @@ import {isEmailValid} from "../../utils/validation";
 import {userDataSelector} from "../../selectors";
 
 export function LoginForm() {
-    let {userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
+    const {userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
 
     const dispatch = useDispatch()
     const [emailError, setEmailError] = useState(false);
@@ -34,7 +34,8 @@ export function LoginForm() {
 
     }, [userProfileRequestSuccess, userProfileRequestFiled]);
 
-    function handleLogin() {
+    function handleLogin(e) {
+        e.preventDefault();
         setEmailError(false)
         setPasswordError(false)
         if (!isEmailValid(inputValue.email)) return setEmailError(true);
@@ -44,7 +45,6 @@ export function LoginForm() {
 
     function handleChangeInput(e) {
         setInputValue({...inputValue, [e.target.name]: e.target.value})
-
     }
 
     return (
@@ -53,7 +53,7 @@ export function LoginForm() {
                 <p className={`text text_type_main-medium ${style.textCenter}`}>
                     Вход
                 </p>
-                <form onChange={handleChangeInput}>
+                <form onSubmit={handleLogin} className={style.wr}>
                     <Input
                         type={'text'}
                         placeholder={'E-mail'}
@@ -77,10 +77,12 @@ export function LoginForm() {
                         value={inputValue.password}
                         onChange={handleChangeInput}
                     />
+                    <Button htmlType="submit" type="primary" size="medium" extraClass="mb-20" >
+                        Войти
+                    </Button>
+
                 </form>
-                <Button htmlType="button" type="primary" size="medium" extraClass="mb-20" onClick={handleLogin}>
-                    Войти
-                </Button>
+
                 <p className={`text text_type_main-default ${style.textCenter} ${style.textBottom}`}>Вы — новый
                     пользователь? <Link to="/register">Зарегистрироваться</Link></p>
                 <p className={`text text_type_main-default ${style.textCenter} ${style.textBottom}`}>Забыли

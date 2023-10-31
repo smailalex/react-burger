@@ -11,7 +11,7 @@ import {getCookie} from "../../utils/cookies";
 export function ProfileForm() {
     const navigate = useNavigate();
     const location = useLocation();
-    let {user, logoutRequestSuccess, userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
+    const {user, logoutRequestSuccess, userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
     const dispatch = useDispatch()
     const [nameError, setNameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
@@ -29,7 +29,8 @@ export function ProfileForm() {
         //console.log(location)
     }, [])
 
-    function handleUserProfileUpdate() {
+    function handleUserProfileUpdate(e) {
+        e.preventDefault();
         setNameError(false)
         setEmailError(false)
         setPasswordError(false)
@@ -40,6 +41,7 @@ export function ProfileForm() {
     }
 
     function handleUserProfileUpdateCancel() {
+
         setInputValue({...user, password: ""})
         setNameError(false)
         setEmailError(false)
@@ -80,7 +82,7 @@ export function ProfileForm() {
                 <p className={`text text_type_main-default mt-20 ${style.inactiveText}`}>В этом разделе вы можете
                     изменить свои персональные данные</p>
             </div>
-            <div className={style.contentWr}>
+            <form className={style.contentWr} onSubmit={handleUserProfileUpdate}>
                 <Input
                     type={'text'}
                     placeholder={'Имя'}
@@ -119,14 +121,14 @@ export function ProfileForm() {
                 />
 
                 {profileChanged && <div className={style.wr}>
-                    <Button htmlType="button" type="primary" size="small" extraClass="mb-20"
-                            onClick={handleUserProfileUpdate}>Сохранить</Button>
+                    <Button htmlType="submit" type="primary" size="small" extraClass="mb-20"
+                            >Сохранить</Button>
                     <Button htmlType="button" type="primary" size="small" extraClass="mb-20"
                             onClick={handleUserProfileUpdateCancel}>Отмена</Button>
                 </div>
                 }
 
-            </div>
+            </form>
 
         </section>
     )

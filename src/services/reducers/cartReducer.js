@@ -17,8 +17,7 @@ const initialState = {
 
 export const cartReducer = (state = initialState, action) => {
     switch (action.type) {
-        default:
-            return state
+
         case ADD_INGREDIENT:
             return {
                 ...state,
@@ -52,5 +51,8 @@ export const cartReducer = (state = initialState, action) => {
             }
         case ERASE_CART:
             return initialState
+
+        default:
+            return state
     }
 } 

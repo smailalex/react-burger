@@ -10,8 +10,6 @@ const initialState = {
 };
 export const orderReducer = (state = initialState, action) => {
     switch (action.type) {
-        default:
-            return state
 
         case ORDER_REQUEST:
             return {
@@ -32,6 +30,8 @@ export const orderReducer = (state = initialState, action) => {
                 orderRequestFiled: true
             }
 
+        default:
+            return state
 
     }
 } 

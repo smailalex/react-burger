@@ -1,11 +1,10 @@
 import {DELETE_MODAL_DATA, SET_MODAL_DATA} from "../actions/ingredientModal";
+
 const initialState = {
     modalData: null,
 };
 export const ingredientModalReducer = (state = initialState, action) => {
     switch (action.type) {
-        default:
-            return state
 
         case SET_MODAL_DATA:
             return {
@@ -18,6 +17,9 @@ export const ingredientModalReducer = (state = initialState, action) => {
             return {
                 initialState
             }
+
+        default:
+            return state
 
 
     }

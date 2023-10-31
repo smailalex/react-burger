@@ -44,8 +44,7 @@ const initialState = {
 };
 export const userReducer = (state = initialState, action) => {
     switch (action.type) {
-        default:
-            return state
+
         case REGISTER_REQUEST:
             return {
                 ...state, registerRequest: true, registerRequestSuccess: false, registerRequestFiled: false
@@ -130,6 +129,7 @@ export const userReducer = (state = initialState, action) => {
             return {
                 ...state, logoutRequest: false, logoutRequestFiled: true, logoutRequestSuccess: false
             }
-
+        default:
+            return state
     }
 }

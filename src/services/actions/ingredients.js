@@ -1,4 +1,6 @@
-const API = 'https://norma.nomoreparties.space/api/ingredients';
+const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
+
+const API = BASE_API_URL+'/ingredients';
 export const GET_INGREDIENTS_REQUEST = 'INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_REQUEST_SUCCESS = 'INGREDIENTS_REQUEST_SUCCESS';
 export const GET_INGREDIENTS_REQUEST_FILED = 'INGREDIENTS_REQUEST_FILED';

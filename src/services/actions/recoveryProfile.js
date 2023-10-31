@@ -2,9 +2,9 @@ export const POST_RECOVERY_BY_MAIL = 'POST_RECOVERY_BY_MAIL';
 export const POST_RECOVERY_BY_MAIL_FILED = 'POST_RECOVERY_BY_MAIL';
 export const POST_PASSWORD_RESET_BY_CODE = 'POST_PASSWORD_RESET_BY_CODE';
 export const POST_PASSWORD_RESET_BY_CODE_FILED = 'POST_PASSWORD_RESET_BY_CODE_FILED';
+const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 
-
-const RECOVERY_API = 'https://norma.nomoreparties.space/api/password-reset';
+const RECOVERY_API = BASE_API_URL+'/password-reset';
 
 
 export function recoveryByMail(mailPostData){

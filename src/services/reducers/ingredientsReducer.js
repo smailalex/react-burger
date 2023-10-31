@@ -15,8 +15,6 @@ const initialState = {
 };
 export const ingredientsReducer = (state = initialState, action) => {
     switch (action.type) {
-        default:
-            return state
 
         case GET_INGREDIENTS_REQUEST:
             return {
@@ -63,10 +61,13 @@ export const ingredientsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ingredients: state.ingredients.map((i) => (i.type === "bun" ?
-                    i._id === action.payload._id ? {...i, count: 2} : {...i, count: null}
-                    : i
+                        i._id === action.payload._id ? {...i, count: 2} : {...i, count: null}
+                        : i
                 ))
             }
+
+        default:
+            return state
 
 
     }

@@ -18,16 +18,28 @@ import {
 } from "../../services/actions/ingredients";
 import {ConstructorElementWrapper} from "../ConstructorElementWrapper/ConstructorElementWrapper";
 import {v4 as uuidv4} from "uuid";
+import {userDataSelector} from "../../selectors";
+import {getUserProfile} from "../../services/actions/user";
+import {useNavigate} from "react-router-dom";
 
 function BurgerConstructor(prop) {
     const {cart, bun} = useSelector(state => state.cart);
     const firstBun = useSelector(state => state.ingredients.ingredients[0]);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [visibleModal, setVisibleModal] = React.useState(false)
 
     const [orderSum, dispatchOrderSum] = React.useReducer(reduceOrder, {sum: 0});
     const {order, orderRequest, orderRequestFiled} = useSelector(state => state.order)
     //const [orderError, setOrderError] = React.useState({isError: false, message: 'defaul error text'})
+
+    const {userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
+    useEffect(() => {
+        dispatch(getUserProfile())
+    }, [dispatch]);
+
+
+
 
     useEffect(() => {
         //dispatch({type: SET_INGREDIENT_BUN, payload: firstBun})
@@ -72,6 +84,13 @@ function BurgerConstructor(prop) {
         dispatchOrderSum({type: 'count'})
     }
     const handleOrderMake = () => {
+
+        if (userProfileRequestFiled) {
+            navigate('/login');
+            return;
+        }
+
+
         if (cart.length < 1 && bun.empty) return;
         const orderIngridientsWithoutBun = cart.map(i => i._id)
         const orderPostData = {ingredients: [bun._id, bun._id, ...orderIngridientsWithoutBun]};

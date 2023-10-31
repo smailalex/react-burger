@@ -2,6 +2,8 @@ import {createSelector} from "reselect";
 const  userSelector = (state) => state.user;
 const  recoveryProfileSelector = (state) => state.recoveryProfile;
 
+const ingredientSelector = (state) => state.ingredients;
+
 export const userDataSelector = createSelector(
     userSelector,
     (userData) => ({
@@ -19,6 +21,15 @@ export const recoveryDataSelector = createSelector(
         resetRequestSuccessFiled: recoveryRequest.resetRequestSuccessFiled,
         filed: recoveryRequest.recoveryRequestFiled,
         message: recoveryRequest.message,
+
+    })
+)
+export const ingredientDataSelector = createSelector(
+    ingredientSelector,
+    (ingredientRequest) => ({
+        ingredientRequest: ingredientRequest.ingredientRequest,
+        ingredientRequestFiled: ingredientRequest.ingredientRequestFiled,
+
 
     })
 )

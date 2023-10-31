@@ -8,8 +8,8 @@ import {getUserProfile} from "../../services/actions/user";
 import {ResetPasswordRequest} from "../../services/actions/recoveryProfile";
 
 export function ResetPasswordForm() {
-    let {userProfileRequestSuccess, userProfileRequestFiled} = useSelector(userDataSelector)
-    let {resetRequestSuccess, resetRequestSuccessFiled} = useSelector(recoveryDataSelector)
+    const {userProfileRequestSuccess, userProfileRequestFiled} = useSelector(userDataSelector)
+    const {resetRequestSuccess, resetRequestSuccessFiled} = useSelector(recoveryDataSelector)
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,7 +27,7 @@ export function ResetPasswordForm() {
     }, [dispatch]);
 
     useEffect(() => {
-        if(resetRequestSuccess) navigate("/login")
+        if (resetRequestSuccess) navigate("/login")
     }, [resetRequestSuccess]);
 
     useEffect(() => {
@@ -40,11 +40,13 @@ export function ResetPasswordForm() {
 
     }, [userProfileRequestSuccess, userProfileRequestFiled]);
 
-    function handleResetPasswordRequest() {
+    function handleResetPasswordRequest(e) {
+        e.preventDefault();
         if (inputValue.password.length < 5) return setPasswordError(true);
         if (inputValue.token.length < 1) return setTokenError(true);
         dispatch(ResetPasswordRequest(inputValue))
     }
+
     function handleChangeInput(e) {
         setInputValue({...inputValue, [e.target.name]: e.target.value})
     }
@@ -55,36 +57,37 @@ export function ResetPasswordForm() {
                 <p className={`text text_type_main-medium ${style.textCenter} pb-6`}>
                     Вход
                 </p>
+                <form className={style.wr} onSubmit={handleResetPasswordRequest}>
+                    <Input
+                        type={'password'}
+                        placeholder={'Введите новый пароль'}
+                        icon={'ShowIcon'}
+                        name={'password'}
+                        error={passwordError}
+                        errorText={'Ошибка ввода пароля, требуется больше 5 символов'}
+                        size={'default'}
+                        extraClass=" pb-6"
+                        value={inputValue.password}
+                        onChange={handleChangeInput}
 
-                <Input
-                    type={'password'}
-                    placeholder={'Введите новый пароль'}
-                    icon={'ShowIcon'}
-                    name={'password'}
-                    error={passwordError}
-                    errorText={'Ошибка ввода пароля, требуется больше 5 символов'}
-                    size={'default'}
-                    extraClass=" pb-6"
-                    value={inputValue.password}
-                    onChange={handleChangeInput}
+                    />
+                    <Input
+                        type={'text'}
+                        placeholder={'Введите код из письма'}
+                        name={'token'}
+                        error={tokenError}
+                        errorText={'Ошибка'}
+                        size={'default'}
+                        extraClass="pb-6"
+                        value={inputValue.token}
+                        onChange={handleChangeInput}
 
-                />
-                <Input
-                    type={'text'}
-                    placeholder={'Введите код из письма'}
-                    name={'token'}
-                    error={tokenError}
-                    errorText={'Ошибка'}
-                    size={'default'}
-                    extraClass="pb-6"
-                    value={inputValue.token}
-                    onChange={handleChangeInput}
+                    />
 
-                />
-
-                <Button htmlType="button" type="primary" size="medium" extraClass="mb-20" onClick={handleResetPasswordRequest}>
-                    Сохранить
-                </Button>
+                    <Button htmlType="submit" type="primary" size="medium" extraClass="mb-20">
+                        Сохранить
+                    </Button>
+                </form>
                 <p className={`text text_type_main-default ${style.textCenter} ${style.textBottom}`}>Вспомнили
                     пароль?<Link
                         to="/register">Войти</Link></p>

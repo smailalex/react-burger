@@ -13,7 +13,7 @@ export function RegisterForm() {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [isLoading, setIsLoading] = useState(true)
-    let {userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
+    const {userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -35,7 +35,8 @@ export function RegisterForm() {
 
     }, [userProfileRequestSuccess, userProfileRequestFiled]);
 
-    function handleUserProfileCreate() {
+    function handleUserProfileCreate(e) {
+        e.preventDefault();
         setNameError(false)
         setEmailError(false)
         setPasswordError(false)
@@ -58,45 +59,47 @@ export function RegisterForm() {
                 <p className={`text text_type_main-medium ${style.textCenter}`}>
                     Вход
                 </p>
-                <Input
-                    type={'text'}
-                    placeholder={'Имя'}
-                    name={'name'}
-                    error={nameError}
-                    errorText={'Ошибка имя от 3 символов'}
-                    size={'default'}
-                    extraClass="pt-6 pb-6"
-                    value={inputValue.name}
-                    onChange={handleChangeInput}
-                />
-                <Input
-                    type={'text'}
-                    placeholder={'E-mail'}
-                    name={'email'}
-                    error={emailError}
-                    errorText={'Ошибка, логин это email не подходит'}
-                    size={'default'}
-                    extraClass="pb-6"
-                    value={inputValue.email}
-                    onChange={handleChangeInput}
-                />
-                <Input
-                    type={'password'}
-                    placeholder={'Пароль'}
-                    icon={'ShowIcon'}
-                    name={'password'}
-                    error={passwordError}
-                    errorText={'Ошибка - такой пароль сохранить нелья, от 6 символов'}
-                    size={'default'}
-                    extraClass=" pb-6"
-                    value={inputValue.password}
-                    onChange={handleChangeInput}
-                />
+                <form onSubmit={handleUserProfileCreate} className={style.wr}>
+                    <Input
+                        type={'text'}
+                        placeholder={'Имя'}
+                        name={'name'}
+                        error={nameError}
+                        errorText={'Ошибка имя от 3 символов'}
+                        size={'default'}
+                        extraClass="pt-6 pb-6"
+                        value={inputValue.name}
+                        onChange={handleChangeInput}
+                    />
+                    <Input
+                        type={'text'}
+                        placeholder={'E-mail'}
+                        name={'email'}
+                        error={emailError}
+                        errorText={'Ошибка, логин это email не подходит'}
+                        size={'default'}
+                        extraClass="pb-6"
+                        value={inputValue.email}
+                        onChange={handleChangeInput}
+                    />
+                    <Input
+                        type={'password'}
+                        placeholder={'Пароль'}
+                        icon={'ShowIcon'}
+                        name={'password'}
+                        error={passwordError}
+                        errorText={'Ошибка - такой пароль сохранить нелья, от 6 символов'}
+                        size={'default'}
+                        extraClass=" pb-6"
+                        value={inputValue.password}
+                        onChange={handleChangeInput}
+                    />
 
-                <Button htmlType="button" type="primary" size="medium" extraClass="mb-20"
-                        onClick={handleUserProfileCreate}>
-                    Зарегистрироваться
-                </Button>
+                    <Button htmlType="submit" type="primary" size="medium" extraClass="mb-20"
+                    >
+                        Зарегистрироваться
+                    </Button>
+                </form>
                 <p className={`text text_type_main-default ${style.textCenter} ${style.textBottom}`}>Уже
                     зарегистрированы? <Link to="/login">Войти</Link></p>
             </section>

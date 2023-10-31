@@ -2,8 +2,8 @@
 export const ORDER_REQUEST = 'ORDER_REQUEST';
 export const ORDER_REQUEST_SUCCESS = 'ORDER_REQUEST_SUCCESS';
 export const ORDER_REQUEST_FILED = 'ORDER_REQUEST_FILED';
-
-const MAKE_ORDER_API = 'https://norma.nomoreparties.space/api/orders';
+const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
+const MAKE_ORDER_API = BASE_API_URL+'/orders';
 
 export function makeOrder(orderPostData) {
     return function (dispatch) {

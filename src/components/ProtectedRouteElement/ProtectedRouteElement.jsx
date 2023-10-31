@@ -6,7 +6,7 @@ import {getUserProfile} from "../../services/actions/user";
 import {useCallback, useEffect} from "react";
 
 export const ProtectedRouteElement = ({element}) => {
-    let {user, userProfileRequestSuccess} = useSelector(userDataSelector)
+    const {user, userProfileRequestSuccess} = useSelector(userDataSelector)
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate()

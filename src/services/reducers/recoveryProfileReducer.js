@@ -16,8 +16,6 @@ const initialState = {
 };
 export const recoveryProfileReducer = (state = initialState, action) => {
     switch (action.type) {
-        default:
-            return state
 
         case POST_RECOVERY_BY_MAIL:
             return {
@@ -43,6 +41,8 @@ export const recoveryProfileReducer = (state = initialState, action) => {
                 resetRequestSuccessFiled: true
             }
 
+        default:
+            return state
 
     }
 }

@@ -16,12 +16,13 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_REQUEST_SUCCESS = 'LOGOUT_REQUEST_SUCCESS';
 export const LOGOUT_REQUEST_FILED = 'LOGOUT_REQUEST_FILED';
 
+const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 
-const REGISTER_USER_API = 'https://norma.nomoreparties.space/api/auth/register';
-const MAKE_LOGIN_API = 'https://norma.nomoreparties.space/api/auth/login';
-const GET_SET_USER_DATA_API = 'https://norma.nomoreparties.space/api/auth/user';
-const REFRESH_TOKEN_API = 'https://norma.nomoreparties.space/api/auth/token';
-const LOGOUT_TOKEN_API = 'https://norma.nomoreparties.space/api/auth/logout';
+const REGISTER_USER_API = BASE_API_URL+'/auth/register';
+const MAKE_LOGIN_API = BASE_API_URL+'/auth/login';
+const GET_SET_USER_DATA_API = BASE_API_URL+'/auth/user';
+const REFRESH_TOKEN_API = BASE_API_URL+'/auth/token';
+const LOGOUT_TOKEN_API = BASE_API_URL+'/auth/logout';
 
 
 export function makeLogout(refreshTokenPostData) {

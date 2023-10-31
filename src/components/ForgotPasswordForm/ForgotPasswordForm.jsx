@@ -13,8 +13,8 @@ export function ForgotPasswordForm() {
     const [emailError, setEmailError] = useState(false);
     const dispatch = useDispatch()
     const [isLoading, setIsLoading] = useState(true)
-    let {message, filed, success} = useSelector(recoveryDataSelector)
-    let {userProfileRequestSuccess, userProfileRequestFiled} = useSelector(userDataSelector)
+    const {message, filed, success} = useSelector(recoveryDataSelector)
+    const {userProfileRequestSuccess, userProfileRequestFiled} = useSelector(userDataSelector)
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -38,7 +38,8 @@ export function ForgotPasswordForm() {
     }, [success])
 
 
-    function handleRecoveryByMail() {
+    function handleRecoveryByMail(e) {
+        e.preventDefault();
         if (!isEmailValid(email)) return setEmailError(true);
         dispatch(recoveryByMail({email}));
     }
@@ -54,23 +55,23 @@ export function ForgotPasswordForm() {
                 <p className={`text text_type_main-medium ${style.textCenter} pb-6`}>
                     Вход
                 </p>
-
-                <Input
-                    type={'text'}
-                    placeholder={'E-mail'}
-                    name={'login'}
-                    error={emailError}
-                    errorText={'Ошибка'}
-                    size={'default'}
-                    extraClass="pb-6"
-                    value={email}
-                    onChange={handleChangeInput}
-                />
-                {success && message && <p>{message}</p>}
-                <Button htmlType="button" type="primary" size="medium" extraClass="mb-20"
-                        onClick={handleRecoveryByMail}>
-                    Восстановить
-                </Button>
+                <form className={style.wr} onSubmit={handleRecoveryByMail}>
+                    <Input
+                        type={'text'}
+                        placeholder={'E-mail'}
+                        name={'login'}
+                        error={emailError}
+                        errorText={'Ошибка'}
+                        size={'default'}
+                        extraClass="pb-6"
+                        value={email}
+                        onChange={handleChangeInput}
+                    />
+                    {success && message && <p>{message}</p>}
+                    <Button htmlType="submit" type="primary" size="medium" extraClass="mb-20">
+                        Восстановить
+                    </Button>
+                </form>
                 <p className={`text text_type_main-default ${style.textCenter} ${style.textBottom}`}>Вспомнили
                     пароль?<Link
                         to="/register">Войти</Link></p>

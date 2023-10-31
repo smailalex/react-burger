@@ -1,48 +1,32 @@
 import React, {useEffect} from 'react';
-//import logo from './logo.svg';
-import { IngredientContext } from '../../services/IngredientsContext';
-import style from './App.module.css';
-import AppHeader from '../AppHeader/AppHeader';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
-import {useDispatch, useSelector} from "react-redux";
-import {getIngredients} from "../../services/actions/ingredients";
-import {HTML5Backend} from "react-dnd-html5-backend";
-import { DndProvider } from 'react-dnd';
-const API = 'https://norma.nomoreparties.space/api/ingredients';
+import {Route, Routes} from "react-router-dom";
+import {Error404, ForgotPassword, HomePage, IngredientID, Login, Profile, Register, ResetPassword} from "../../pages";
+import {ProtectedRouteElement} from "../ProtectedRouteElement/ProtectedRouteElement";
+import AppHeader from "../AppHeader/AppHeader";
+import style from "./App.module.css";
 
 function App() {
 
-  //const [isDataLoaded, setIsDataLoaded] = React.useState(false)
- // const [isLoading, setIsLoading] = React.useState(true)
-  //const [ingredientData, setIngredientData] = React.useState({})
-  const [error, setError] = React.useState({ isError: false, message: '' })
-  const dispatch = useDispatch();
-  const ingredientSelector = (state) => state.ingredients;
-  const {ingredientRequest, ingredientRequestFiled} = useSelector(ingredientSelector);
-    useEffect(() => {
-        dispatch(getIngredients())
-    }, [dispatch]);
+    return (
 
-  return (
-    <div className={style.App}>
-      <AppHeader />
-      <main className={style.main}>
-        {ingredientRequest && !ingredientRequestFiled && <p>Данные загружаются...</p>}
-        {ingredientRequestFiled /*error.isError*/ && <p>Возникла ошибка загрузки данных ({error.message})</p>}
-        {/*ingredientRequest && !error.isError*/
-            !ingredientRequest && !ingredientRequestFiled &&
-            <>
-            <DndProvider backend={HTML5Backend}>
-                <BurgerIngredients />
-                <BurgerConstructor />
-            </DndProvider>
-            </>
-        }
+            <div className={style.App}>
+                <AppHeader/>
+            <Routes>
+                <Route path="/" element={<HomePage/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                <Route path="/register" element={<Register/>}/>
+                <Route path="/reset-password" element={<ResetPassword/>}/>
 
-      </main>
-    </div>
-  );
+                <Route path="/ingredients/:id" element={<IngredientID/>}/>
+
+                <Route path="/profile" element={<ProtectedRouteElement element={<Profile/>}/>}/>
+                <Route path="*" element={<ProtectedRouteElement element={<Error404/>}/>}/>
+
+            </Routes>
+            </div>
+
+    );
 }
 
 export default App;
