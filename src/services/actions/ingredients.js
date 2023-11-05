@@ -1,3 +1,5 @@
+import {checkResponse} from "../../utils/helpers";
+
 const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 
 const API = BASE_API_URL+'/ingredients';
@@ -16,12 +18,7 @@ export function getIngredients() {
             type: GET_INGREDIENTS_REQUEST
         });
         fetch(API)
-            .then((response) => {
-                if (response.ok) {
-                    return response.json()
-                }
-                return Promise.reject(`Ошибка ${response.status}`)
-            })
+            .then(checkResponse)
             .then(json => {
                 json.success &&
                 dispatch({

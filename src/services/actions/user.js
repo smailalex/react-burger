@@ -1,4 +1,5 @@
 import {deleteCookie, getCookie, setCookie} from "../../utils/cookies";
+import {checkResponse} from "../../utils/helpers";
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_REQUEST_SUCCESS = 'LOGIN_REQUEST_SUCCESS';
@@ -80,15 +81,7 @@ export function makeRegisterUser(registerPostData) {
             body: JSON.stringify(registerPostData)
         };
         fetch(REGISTER_USER_API, requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    //console.log('response', response)
-                    return response.json()
-                    //console.log('response.ok')
-
-                }
-                return Promise.reject(`Ошибка ${response.status}`)
-            })
+            .then(checkResponse)
             .then(json => {
                 json.success &&
                 setCookie('accessToken', json.accessToken, {expires: 60 * 60 * 24})
@@ -128,15 +121,7 @@ export function makeLogin(loginPostData) {
             body: JSON.stringify(loginPostData)
         };
         fetch(MAKE_LOGIN_API, requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    //console.log('response', response)
-                    return response.json()
-                    //console.log('response.ok')
-
-                }
-                return Promise.reject(`Ошибка ${response.status}`)
-            })
+            .then(checkResponse)
             .then(json => {
                 json.success &&
                 setCookie('accessToken', json.accessToken, {expires: 60 * 60 * 24})
@@ -173,14 +158,7 @@ const makeRefreshAccessToken = async (refreshToken) => {
         body: JSON.stringify({"token": refreshToken})
     };
     fetch(REFRESH_TOKEN_API, requestOptions)
-        .then(response => {
-            console.log('makeRefreshAccessToken')
-
-            if (response.ok) {
-                return response.json()
-            }
-            //return Promise.reject(`Ошибка ${response.status}`)
-        })
+        .then(checkResponse)
         .then(json => {
             json.success &&
             console.log(' update acess tooken ', refreshToken, json.accessToken)
@@ -267,12 +245,7 @@ export function makeProfileUpdate(updatePostData) {
             body: JSON.stringify(updatePostData)
         };
         fetch(GET_SET_USER_DATA_API, requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                }
-                //return Promise.reject(`Ошибка ${response.status}`)
-            })
+            .then(checkResponse)
             .then(json => {
                 //console.log(json)
                 if (json.success) {
@@ -290,7 +263,7 @@ export function makeProfileUpdate(updatePostData) {
                 }
             })
             .catch((e) => {
-                console.log('Error', e)
+                //console.log('Error', e)
                 dispatch({
                     type: POST_USER_PROFILE_UPDATE_FILED
                 });

@@ -1,10 +1,13 @@
 import {ResetPasswordForm} from "../components/ResetPasswordForm/ResetPasswordForm";
+import {Navigate, useLocation, useNavigate} from "react-router-dom";
 
 export const ResetPassword = () => {
-    return (
+    const location = useLocation();
 
-            <div className={`ContentCenterHorizontal ContentCenterVertical`}>
-                <ResetPasswordForm/>
-            </div>
+    return (
+        (location.state?.form?.pathname === '/forgot-password' ) ?  <div className={`ContentCenterHorizontal ContentCenterVertical`}>
+            <ResetPasswordForm/>
+        </div> : <Navigate to={'/'}  />
+
     )
 }

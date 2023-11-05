@@ -9,4 +9,5 @@
  max-width: 1248px;
  width: 100%;
  column-gap: 40px;
+ justify-content: center;
 }

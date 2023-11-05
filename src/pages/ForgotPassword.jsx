@@ -2,10 +2,8 @@ import {ForgotPasswordForm} from "../components/ForgotPasswordForm/ForgotPasswor
 
 export const ForgotPassword = () => {
     return (
-        <>
             <div className={`ContentCenterHorizontal ContentCenterVertical`}>
                 <ForgotPasswordForm/>
             </div>
-        </>
     )
 }

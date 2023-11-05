@@ -1,3 +1,4 @@
+import {checkResponse} from "../../utils/helpers";
 
 export const ORDER_REQUEST = 'ORDER_REQUEST';
 export const ORDER_REQUEST_SUCCESS = 'ORDER_REQUEST_SUCCESS';
@@ -19,13 +20,7 @@ export function makeOrder(orderPostData) {
             body: JSON.stringify(orderPostData)
         };
         fetch(MAKE_ORDER_API, requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                    //console.log('response.ok')
-                }
-                return Promise.reject(`Ошибка ${response.status}`)
-            })
+            .then(checkResponse)
             .then(json => {
                 json.success &&
                 dispatch({

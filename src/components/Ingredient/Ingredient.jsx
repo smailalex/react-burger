@@ -26,7 +26,7 @@ const Ingredient = ({ ingredient}) => {
 
   const handleModalOpen = (ingredient) => {
     //console.log(location.state)
-    navigate('ingredients/'+ingredient._id, {state: {form: location.pathname, ingredient}})
+    navigate('ingredients/'+ingredient._id, {state: {form: location.pathname, ingredient, isModal: true}})
 
     //dispatch({type: SET_MODAL_DATA, payload: ingredient})
   }
