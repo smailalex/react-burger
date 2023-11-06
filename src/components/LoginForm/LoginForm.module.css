@@ -1,0 +1,20 @@
+.wr{
+    justify-content: center;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+}
+.textCenter{
+    text-align: center;
+}
+.textBottom{
+    color: var(--text-inactive-color);
+}
+a{
+    color: var(--colors-interface-accent);
+    text-decoration: none;
+}
+a:hover{
+    color: var(--text-primary-color);
+    text-decoration: underline;
+}

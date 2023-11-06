@@ -1,0 +1,18 @@
+.wr {
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ padding: 120px 100px;
+}
+.title{
+    text-align: center;
+    width: 100%;
+    padding-left: 40px;
+}
+.darkcolor{
+    color: var(--text-inactive-color);
+}
+.doneImg{
+    padding: 60px;
+}

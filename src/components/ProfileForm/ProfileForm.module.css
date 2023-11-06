@@ -1,0 +1,45 @@
+.wr{
+    justify-content: center;
+    align-content: center;
+    display: flex;
+    column-gap: 60px;
+}
+.textCenter{
+    text-align: center;
+}
+.textBottom{
+    color: var(--text-inactive-color);
+}
+a{
+    color: var(--colors-interface-accent);
+    text-decoration: none;
+}
+a:hover{
+    color: var(--text-primary-color);
+    text-decoration: underline;
+}
+.menuWr{
+    justify-content: left;
+    align-content: start;
+    display: flex;
+    flex-direction: column;
+    max-width: 320px;
+}
+.menuWr a  {
+    text-decoration: none;
+    color: var(--text-inactive-color);
+}
+.menuWr a:hover,  .menuWr a.active {
+    color: var(--text-primary-color);
+}
+
+.contentWr{
+    justify-content: start;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+}
+.inactiveText{
+    color: var(--text-inactive-color);
+}
