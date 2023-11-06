@@ -19,11 +19,11 @@ export const LOGOUT_REQUEST_FILED = 'LOGOUT_REQUEST_FILED';
 
 const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 
-const REGISTER_USER_API = BASE_API_URL+'/auth/register';
-const MAKE_LOGIN_API = BASE_API_URL+'/auth/login';
-const GET_SET_USER_DATA_API = BASE_API_URL+'/auth/user';
-const REFRESH_TOKEN_API = BASE_API_URL+'/auth/token';
-const LOGOUT_TOKEN_API = BASE_API_URL+'/auth/logout';
+const REGISTER_USER_API = BASE_API_URL + '/auth/register';
+const MAKE_LOGIN_API = BASE_API_URL + '/auth/login';
+const GET_SET_USER_DATA_API = BASE_API_URL + '/auth/user';
+const REFRESH_TOKEN_API = BASE_API_URL + '/auth/token';
+const LOGOUT_TOKEN_API = BASE_API_URL + '/auth/logout';
 
 
 export function makeLogout(refreshTokenPostData) {
@@ -39,26 +39,18 @@ export function makeLogout(refreshTokenPostData) {
             },
             body: JSON.stringify(refreshTokenPostData)
         };
-         async function logout(){
-            try {
 
-                const response = await fetch(LOGOUT_TOKEN_API, requestOptions)
-                if (response.ok){
-                    const data = await response.json();
-                    if (data.success) {
-                        dispatch({type: LOGOUT_REQUEST_SUCCESS, payload: data.message})
-                        deleteCookie('accessToken')
-                        deleteCookie('refreshToken')
-                    }else{
-                        dispatch({type: LOGOUT_REQUEST_FILED})
-                    }
-                }
-            }
-            catch (e) {
+        fetch(LOGOUT_TOKEN_API, requestOptions)
+            .then(checkResponse)
+            .then(json => {
+                json.success &&
+                dispatch({type: LOGOUT_REQUEST_SUCCESS, payload: json.message})
+                deleteCookie('accessToken')
+                deleteCookie('refreshToken')
+            })
+            .catch((e) => {
                 dispatch({type: LOGOUT_REQUEST_FILED})
-            }
-        }
-        logout();
+            })
 
     }
 
@@ -157,6 +149,7 @@ const makeRefreshAccessToken = async (refreshToken) => {
         },
         body: JSON.stringify({"token": refreshToken})
     };
+
     fetch(REFRESH_TOKEN_API, requestOptions)
         .then(checkResponse)
         .then(json => {
@@ -178,6 +171,12 @@ export function getUserProfile() {
         dispatch({
             type: GET_USER_PROFILE
         });
+        if (!getCookie('accessToken')) {
+            dispatch({
+                type: GET_USER_PROFILE_FILED
+            });
+            return
+        }
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -186,16 +185,7 @@ export function getUserProfile() {
             }
         };
         fetch(GET_SET_USER_DATA_API, requestOptions)
-            .then(response => {
-                if ([403, 200].includes(response.status)) {
-                    return response.json();
-                }
-                if ([401].includes(response.status)) {
-                    return response.json();
-                }
-                //console.log(response.status)
-                return Promise.reject(`Ошибка ${response.status}`)
-            })
+            .then(checkResponse)
             .then(json => {
                 if (json.success) {
                     //setCookie('token' , json.accessToken, {expires: 60*60*24})
@@ -209,22 +199,21 @@ export function getUserProfile() {
                     makeRefreshAccessToken(getCookie('refreshToken')).then(() => {
                         getUserProfile();
                     })
-                }else if(!json.success){
-                    console.log(json.message)
+                } else if (!json.success) {
+                    //console.log(json.message)
                     dispatch({
                         type: GET_USER_PROFILE_FILED
                     });
                 }
             })
-            .catch((e, json) => {
-                //console.log('Error', e)
+            .catch((e) => {
+                /*console.log('Error: ' + e.message);
+                console.log(e.response);*/
                 dispatch({
                     type: GET_USER_PROFILE_FILED
                 });
             })
-            .finally(() => {
 
-            })
     };
 }
 

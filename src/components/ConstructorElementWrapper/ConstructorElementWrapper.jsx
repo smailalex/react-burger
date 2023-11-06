@@ -6,9 +6,7 @@ import {useDrag, useDrop} from "react-dnd";
 
 export function ConstructorElementWrapper({item, index, moveConstructorIngredient, handleRemoveIngredien}) {
     const ref = useRef(null)
-    useEffect(() => {
-        console.log('ConstructorElementWrapper rend ')
-    }, );
+
     const [{ handlerId }, drop] = useDrop({
         accept: ['main', 'sauce'],
         collect(monitor) {

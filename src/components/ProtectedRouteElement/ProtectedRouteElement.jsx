@@ -11,7 +11,7 @@ export const ProtectedRouteElement = ({element}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     useEffect(() => {
-        console.log(element.type.name)
+        //console.log(element.type.name)
         if (location.state?.form?.pathname === '/forgot-password') {
             navigate('/reset-password')
         }

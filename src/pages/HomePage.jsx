@@ -37,7 +37,6 @@ export const HomePage = () => {
         //setVisibleModal(false)
     }
 
-
     useEffect(() => {
         dispatch(getIngredients())
     }, [dispatch]);
@@ -46,8 +45,7 @@ export const HomePage = () => {
         if (!location.state?.isModal && params.id && ingredients.length > 0) {
             setIngredientDetailPageData(ingredients.find(i => i._id = params.id))
         }
-    }, [params, ingredients, location]);
-// {}
+    }, [ingredientRequestSuccess, params, ingredients, location]);
 
     return (
         <main className={style.main}>
