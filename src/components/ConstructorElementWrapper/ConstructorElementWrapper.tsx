@@ -1,20 +1,31 @@
-import React, {useEffect, useRef} from "react";
+import React, {FC, useRef} from "react";
 import style from "../BurgerConstructor/BurgerConstructor.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDrag, useDrop} from "react-dnd";
+import {DropTargetMonitor, useDrag, useDrop} from "react-dnd";
+import {Tingredient} from "../../utils/interfaces";
 
+interface IConstructorElementWrapperProps{
+    item: Tingredient ;
+    index: number;
+    moveConstructorIngredient: (dragIndex: number, hoverIndex: number) => void;
+    handleRemoveIngredien: (item: Tingredient) => void;
+}
 
-export function ConstructorElementWrapper({item, index, moveConstructorIngredient, handleRemoveIngredien}) {
-    const ref = useRef(null)
+export const  ConstructorElementWrapper:FC<IConstructorElementWrapperProps> = ({item, index, moveConstructorIngredient, handleRemoveIngredien}) => {
+    const ref = useRef<HTMLDivElement>(null)
 
+    //TODO: не понимаю как это исправить
+    // @ts-ignore
     const [{ handlerId }, drop] = useDrop({
         accept: ['main', 'sauce'],
-        collect(monitor) {
+        collect(monitor:DropTargetMonitor) {
             return {
                 handlerId: monitor.getHandlerId(),
             }
         },
-        hover(item, monitor) {
+        //TODO: не понимаю как это исправить
+        // @ts-ignore
+        hover(item: {index: number}, monitor:DropTargetMonitor) {
             if (!ref.current) {
                 return
             }
@@ -32,6 +43,7 @@ export function ConstructorElementWrapper({item, index, moveConstructorIngredien
             // Determine mouse position
             const clientOffset = monitor.getClientOffset()
             // Get pixels to the top
+            // @ts-ignore
             const hoverClientY = clientOffset.y - hoverBoundingRect.top
             // Only perform the move when the mouse has crossed half of the items height
             // When dragging downwards, only move when the cursor is below 50%
@@ -53,7 +65,11 @@ export function ConstructorElementWrapper({item, index, moveConstructorIngredien
             item.index = hoverIndex
         },
     })
+    //TODO: не понимаю как это исправить
+    // @ts-ignore
     const [{ isDragging }, drag] = useDrag({
+        //TODO: не понимаю как это исправить
+        // @ts-ignore
         type: item.type,
         item:() => {
             return { key: item.key, index }
@@ -62,13 +78,12 @@ export function ConstructorElementWrapper({item, index, moveConstructorIngredien
             isDragging: monitor.isDragging(),
         }),
     })
-    const opacity = isDragging ? 0 : 1
+    const opacity:number = isDragging ? 0 : 1
     drag(drop(ref))
     return (
         <div ref={ref} style={{ opacity }} data-handler-id={handlerId} className={`${style.itemWr}  ${isDragging && style.onHover}`} >
             <span className={style.drugIcon}><DragIcon type="primary"/></span>
             <ConstructorElement
-                type={item.type}
                 isLocked={false}
                 text={item.name}
                 price={item.price}

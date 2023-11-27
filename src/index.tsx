@@ -4,14 +4,14 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { createStore, compose, applyMiddleware } from 'redux';
 import { rootReducer } from './services/reducers/rootReducer'; 
-import {Provider, useSelector} from 'react-redux';
+import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import App from "./components/App/App";
 
 const composeEnhancers =
-    typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-        ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+    typeof window === 'object' && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+        ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
         : compose;
 const enhancer = composeEnhancers(
     applyMiddleware(thunk)
@@ -19,7 +19,7 @@ const enhancer = composeEnhancers(
 const store = createStore(rootReducer, enhancer);
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root')// as HTMLElement
+  document.getElementById('root') as HTMLElement
 );
 
 root.render(

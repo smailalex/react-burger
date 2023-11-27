@@ -1,7 +1,6 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {FC, useCallback, useEffect} from 'react';
 import style from './BurgerConstructor.module.css';
 import {ConstructorElement, Button, CurrencyIcon, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import {useDrop} from 'react-dnd';
 
@@ -21,24 +20,29 @@ import {v4 as uuidv4} from "uuid";
 import {userDataSelector} from "../../selectors";
 import {getUserProfile} from "../../services/actions/user";
 import {useNavigate} from "react-router-dom";
+import {CartState, OrderState, RootState, Tingredient} from "../../utils/interfaces";
 
-function BurgerConstructor(prop) {
-    const {cart, bun} = useSelector(state => state.cart);
+
+
+
+function BurgerConstructor() {
+    const {cart, bun} = useSelector<RootState, CartState>(state => state.cart);
+    // @ts-ignore
     const firstBun = useSelector(state => state.ingredients.ingredients[0]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [visibleModal, setVisibleModal] = React.useState(false)
 
     const [orderSum, dispatchOrderSum] = React.useReducer(reduceOrder, {sum: 0});
-    const {order, orderRequest, orderRequestFiled} = useSelector(state => state.order)
+
+    const {order, orderRequest, orderRequestFiled} = useSelector<RootState, OrderState>(state => state.order)
     //const [orderError, setOrderError] = React.useState({isError: false, message: 'defaul error text'})
 
-    const {userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
+    const {userProfileRequestFiled} = useSelector(userDataSelector)
     useEffect(() => {
+        // @ts-ignore
         dispatch(getUserProfile())
     }, [dispatch]);
-
-
 
 
     useEffect(() => {
@@ -46,13 +50,18 @@ function BurgerConstructor(prop) {
         dispatchOrderSum({type: 'count'})
     }, []);
 
+    //TODO: не понимаю как это исправить
+    // @ts-ignore
     const [{isHover}, dropTarget] = useDrop({
         accept: ['main', 'sauce', 'bun'],
         collect: monitor => ({
             isHover: monitor.isOver()
         }),
 
-        drop(ingredient) {
+
+        //TODO: не понимаю как это исправить
+        // @ts-ignore
+        drop(ingredient: Tingredient) {
             if ((['main', 'sauce'].includes(ingredient.type))) {
                 dispatch({type: ADD_INGREDIENT, payload: {...ingredient, key: uuidv4()}})
                 dispatch({type: ADD_COUNT_INGREDIENT, payload: {_id: ingredient._id}})
@@ -68,15 +77,15 @@ function BurgerConstructor(prop) {
     });
 
 
-    function reduceOrder(state, action) {
+    function reduceOrder(state : {sum: number}, action: {type: 'count'}) {
 
         if (action.type === 'count') {
-            return {sum: cart.reduce((sum, i) => sum + i.price, 0) + bun.price * 2}
+            return {sum: cart.reduce((sum: number, i : {price: number}) => sum + i.price, 0) + bun.price * 2}
         }
         throw Error('ошибка вычисления суммы заказа')
     }
 
-    const handleRemoveIngridien = (ingredient) => {
+    const handleRemoveIngridien = (ingredient: Tingredient ) => {
         //console.log(ingredient._id)
         dispatch({type: DELETE_COUNT_INGREDIENT, payload: {_id: ingredient._id}})
         dispatch({type: DELETE_INGREDIENT, payload: ingredient.key})
@@ -92,8 +101,9 @@ function BurgerConstructor(prop) {
 
 
         if (cart.length < 1 && bun.empty) return;
-        const orderIngridientsWithoutBun = cart.map(i => i._id)
+        const orderIngridientsWithoutBun = cart.map((i) => i._id)
         const orderPostData = {ingredients: [bun._id, bun._id, ...orderIngridientsWithoutBun]};
+        // @ts-ignore
         dispatch(makeOrder(orderPostData));
         setVisibleModal(true)
         dispatch({type: ERASE_CART})
@@ -103,15 +113,16 @@ function BurgerConstructor(prop) {
 
     }
 
-    const moveConstructorIngredient = ((dragIndex, hoverIndex) => {
+    const moveConstructorIngredient = ((dragIndex:number, hoverIndex:number) => {
         if (cart.length > 1) dispatch({type: SET_CART, payload: {dragIndex, hoverIndex}})
     })
 
     const handleModalClose = () => {
         setVisibleModal(false)
     }
-    //TODO: тут если добавить [] deps , то перестает срабатывать сортировка при наведении, так работает но дергается и ConstructorElementWrapper useCallback можно вообще убрать, но в примере он был
-    const renderConstructorElementWrapper = useCallback((i, index) => {
+
+    const renderConstructorElementWrapper = useCallback((i:Tingredient, index:number) => {
+
         return (
             <ConstructorElementWrapper
                 key={i.key}
@@ -120,7 +131,7 @@ function BurgerConstructor(prop) {
                 handleRemoveIngredien={handleRemoveIngridien}
                 moveConstructorIngredient={moveConstructorIngredient}/>
         )
-    })
+    }, [])
 
     return (
         <>
@@ -149,10 +160,9 @@ function BurgerConstructor(prop) {
 
                     <div className={`${style.ingridientsWr} ${style.listWr}`}>
                         {cart.length > 0 ?
-                            cart.map((i, index) => renderConstructorElementWrapper(i, index))
+                            cart.map((i, index:number) => renderConstructorElementWrapper(i, index))
                             :
                             <ConstructorElement
-                                type="main"
                                 isLocked={true}
                                 text={'добавьте ингредиенты'}
                                 price={bun.price}
@@ -206,7 +216,5 @@ function BurgerConstructor(prop) {
 
 }
 
-BurgerConstructor.propTypes = {
-    ingredients: PropTypes.array
-}
+
 export default BurgerConstructor;

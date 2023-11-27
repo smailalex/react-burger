@@ -1,4 +1,9 @@
-export function setCookie(name, value, props = {}) {
+interface CookiesProps{
+    path? : string;
+    expires? : number | string | Date;
+    [key: string] : any;
+}
+export function setCookie(name: string, value: string, props: CookiesProps = {}): void {
     props = {
         path: "/",
         ...props,
@@ -10,7 +15,7 @@ export function setCookie(name, value, props = {}) {
         d.setTime(d.getTime() + exp * 1000);
         exp = props.expires = d;
     }
-    if (exp && exp.toUTCString) {
+    if (exp instanceof Date) {
         props.expires = exp.toUTCString();
     }
     value = encodeURIComponent(value);
@@ -25,13 +30,14 @@ export function setCookie(name, value, props = {}) {
     document.cookie = updatedCookie;
 }
 
-export function getCookie(name) {
+export function getCookie(name : string):string | undefined {
     const matches = document.cookie.match(
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
-export function deleteCookie(name) {
+
+export function deleteCookie(name : string): void {
     // Set the cookie's expiration date to a past date
     document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }

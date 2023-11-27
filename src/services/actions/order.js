@@ -15,7 +15,6 @@ export function makeOrder(orderPostData) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer your_access_token'
             },
             body: JSON.stringify(orderPostData)
         };

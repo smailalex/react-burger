@@ -1,10 +1,16 @@
-import React from "react";
+import React, {FC} from "react";
 import style from "./OrderDetails.module.css";
 import doneIco from "../../images/done.png"
-import Types from '../../utils/types';
+//import Types from '../../utils/types';
 
-
-function OrderDetails({ order, orderError }) {
+interface IO {
+    order : { number: number};
+    orderError: {
+        message: string;
+        isError: boolean;
+    }
+}
+const OrderDetails :FC<IO> = ({ order, orderError }) => {
     //console.log(order, orderError )
     return (
         <div className={style.wr}>
@@ -23,5 +29,5 @@ function OrderDetails({ order, orderError }) {
     )
 }
 
-OrderDetails.propTypes = Types.order;
+//OrderDetails.propTypes = Types.order;
 export default OrderDetails;

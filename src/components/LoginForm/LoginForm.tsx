@@ -3,7 +3,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import style from "./LoginForm.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {getUserProfile, LOGIN_REQUEST, makeLogin} from "../../services/actions/user";
-import {useEffect, useRef, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {isEmailValid} from "../../utils/validation";
 import {userDataSelector} from "../../selectors";
 import {useForm} from "../../hooks/useForm";
@@ -16,20 +16,21 @@ export function LoginForm() {
     });
 
     const dispatch = useDispatch()
-    const [emailError, setEmailError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
-    const [isLoading, setIsLoading] = useState(true)
+    const [emailError, setEmailError] = useState<boolean>(false);
+    const [passwordError, setPasswordError] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true)
     const location = useLocation();
     const navigate = useNavigate();
 
 
     useEffect(() => {
+        // @ts-ignore
         dispatch(getUserProfile())
     }, [dispatch]);
 
     useEffect(() => {
         if (userProfileRequestSuccess) {
-            navigate(location.state?.form?.pathname ? location.state.form.pathname : '/')
+            navigate(location.state?.from?.pathname ? location.state.from.pathname : '/')
         }
         if (userProfileRequestFiled) {
             setIsLoading(false)
@@ -39,12 +40,13 @@ export function LoginForm() {
 
 
 
-    function handleLogin(e) {
+    function handleLogin(e:FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setEmailError(false)
         setPasswordError(false)
         if (!isEmailValid(values.email)) return setEmailError(true);
         if (values.password.length < 5) return setPasswordError(true);
+        // @ts-ignore
         dispatch(makeLogin(values))
     }
 

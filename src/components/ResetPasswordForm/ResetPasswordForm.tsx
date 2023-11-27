@@ -24,6 +24,8 @@ export function ResetPasswordForm() {
     });
 
     useEffect(() => {
+        //:TODO не решено
+        // @ts-ignore
         dispatch(getUserProfile())
     }, [dispatch]);
 
@@ -33,7 +35,7 @@ export function ResetPasswordForm() {
 
     useEffect(() => {
         if (userProfileRequestSuccess) {
-            navigate(location.state?.form?.pathname ? location.state.form.pathname : '/')
+            navigate(location.state?.from?.pathname ? location.state.from.pathname : '/')
         }
         if (userProfileRequestFiled) {
             setIsLoading(false)
@@ -41,10 +43,12 @@ export function ResetPasswordForm() {
 
     }, [userProfileRequestSuccess, userProfileRequestFiled]);
 
-    function handleResetPasswordRequest(e) {
+    function handleResetPasswordRequest(e:React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (values.password.length < 5) return setPasswordError(true);
         if (values.token.length < 1) return setTokenError(true);
+        //:TODO не решено
+        // @ts-ignore
         dispatch(ResetPasswordRequest(values))
     }
 

@@ -1,8 +1,7 @@
 import React from 'react';
-//import logo from './logo.svg';
 import style from './AppHeader.module.css';
 import {Link, useLocation} from "react-router-dom";
-import { Logo, BurgerIcon, ListIcon, ProfileIcon, Typography, Box } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function AppHeader() {
     const location = useLocation();

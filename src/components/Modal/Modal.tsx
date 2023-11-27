@@ -1,16 +1,19 @@
-import React, { Children, useEffect } from 'react';
+import React, {Children, FormEvent, ReactElement, ReactNode, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import style from './Modal.module.css';
-import Types from '../../utils/types';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 
 
-const modalRoot = document.getElementById("react-modals");
+const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
-function Modal(props) {
+interface IModal {
+    onClose: () => void;
+    children: ReactNode
+}
+function Modal(props: IModal) {
     useEffect(() => {
         //console.log(props)
-        const onKeyboard = (e) => {
+        const onKeyboard = (e: KeyboardEvent) => {
             e.key === "Escape" && props.onClose()
         }
 
@@ -19,16 +22,15 @@ function Modal(props) {
             window.removeEventListener('keydown', onKeyboard)
         }
     }, [])
- 
 
     return ReactDOM.createPortal((
         <div className={style.modal} onClick={props.onClose}>
             <div className={style.content} onClick={(e) => e.stopPropagation()}>
-                <div className={style.close} onClick={props.onClose}><CloseIcon type="primary" /></div>
+                <div className={style.close} onClick={props.onClose}><CloseIcon type="primary"/></div>
                 {props.children}
             </div>
         </div>
     ), modalRoot);
 }
-Modal.propTypes = Types.modal;
+
 export default Modal;

@@ -3,13 +3,16 @@ import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
 import style from "./ProfileForm.module.css";
 import {useDispatch, useSelector} from "react-redux";
 import {userDataSelector} from "../../selectors";
-import {useEffect, useState} from "react";
+import {ChangeEvent, FC, FormEvent, FormEventHandler, useEffect, useState} from "react";
 import {isEmailValid} from "../../utils/validation";
 import {makeLogin, makeLogout, makeProfileUpdate} from "../../services/actions/user";
 import {getCookie} from "../../utils/cookies";
 import {useForm} from "../../hooks/useForm";
 
-export function ProfileForm() {
+
+
+
+export const ProfileForm = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const {values, handleChange : handleChangeInput, setValues} = useForm({
@@ -17,7 +20,7 @@ export function ProfileForm() {
         "email": "",
         "password": ""
     });
-    const {user, logoutRequestSuccess, userProfileRequestFiled, userProfileRequestSuccess} = useSelector(userDataSelector)
+    const {user} = useSelector(userDataSelector)
     const dispatch = useDispatch()
     const [nameError, setNameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
@@ -31,7 +34,7 @@ export function ProfileForm() {
         //console.log(location)
     }, [user])
 
-    function handleUserProfileUpdate(e) {
+    function handleUserProfileUpdate(e:React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setNameError(false)
         setEmailError(false)
@@ -39,6 +42,8 @@ export function ProfileForm() {
         if (!isEmailValid(values.email)) return setEmailError(true);
         if (values.password.length < 5) return setPasswordError(true);
         //console.log('handleLogin', values)
+        //:TODO не решено
+        // @ts-ignore
         dispatch(makeProfileUpdate(values))
         //setValues({...user, password: ""})
     }
@@ -52,8 +57,10 @@ export function ProfileForm() {
         setProfileChanged(false)
     }
 
-    function handleLogout(e) {
+    function handleLogout(e:FormEvent<HTMLAnchorElement>) {
         e.preventDefault();
+        //:TODO не решено
+        // @ts-ignore
         dispatch(makeLogout({token: getCookie('refreshToken')}))
         /*console.log(logoutRequestSuccess)
         if (logoutRequestSuccess) {
@@ -62,7 +69,7 @@ export function ProfileForm() {
     }
 
 
-   function handleChange(e){
+   function handleChange(e:ChangeEvent<HTMLInputElement>){
         setProfileChanged(true)
         handleChangeInput(e)
    }

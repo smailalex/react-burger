@@ -1,8 +1,12 @@
 import {createSelector} from "reselect";
+import {RootState} from "../utils/interfaces";
 const  userSelector = (state) => state.user;
 const  recoveryProfileSelector = (state) => state.recoveryProfile;
 
 const ingredientSelector = (state) => state.ingredients;
+
+const ingredientDetailsSelector = (state) => state.ingredientModal;
+
 
 export const userDataSelector = createSelector(
     userSelector,
@@ -32,6 +36,13 @@ export const ingredientDataSelector = createSelector(
         ingredientRequestFiled: ingredientRequest.ingredientRequestFiled,
         ingredientRequestSuccess: ingredientRequest.ingredientRequestSuccess
 
+
+    })
+)
+export const ingredientDetailsDataSelector = createSelector(
+    ingredientDetailsSelector,
+    (modalDataRequest) => ({
+            modalData: modalDataRequest.modalData
 
     })
 )

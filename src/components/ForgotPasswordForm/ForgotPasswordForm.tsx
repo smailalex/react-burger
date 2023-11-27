@@ -1,22 +1,23 @@
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import style from "./ForgotPasswordForm.module.css";
-import {useEffect, useState} from "react";
+import {FormEvent, SyntheticEvent, useEffect, useState} from "react";
 import {isEmailValid} from "../../utils/validation";
 import {useDispatch, useSelector} from "react-redux";
 import {recoveryByMail} from "../../services/actions/recoveryProfile";
 import {recoveryDataSelector, userDataSelector} from "../../selectors";
 import {getUserProfile} from "../../services/actions/user";
 import {useForm} from "../../hooks/useForm";
+import {IFormValues} from "../../utils/interfaces";
 
-export function ForgotPasswordForm() {
+export const ForgotPasswordForm = () => {
     const {values, handleChange, setValues} = useForm({
         "email": "",
     });
-    const [emailError, setEmailError] = useState(false);
+    const [emailError, setEmailError] = useState<boolean>(false);
     const dispatch = useDispatch()
-    const [isLoading, setIsLoading] = useState(true)
-    const {message, filed, success} = useSelector(recoveryDataSelector)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const {message, success} = useSelector(recoveryDataSelector)
     const {userProfileRequestSuccess, userProfileRequestFiled} = useSelector(userDataSelector)
 
     const navigate = useNavigate();
@@ -24,12 +25,13 @@ export function ForgotPasswordForm() {
 
 
     useEffect(() => {
+        // @ts-ignore
         dispatch(getUserProfile())
     }, [dispatch]);
 
     useEffect(() => {
         if (userProfileRequestSuccess) {
-            navigate(location.state?.form?.pathname ? location.state.form.pathname : '/')
+            navigate(location.state?.from?.pathname ? location.state.from.pathname : '/')
         }
         if (userProfileRequestFiled) {
             setIsLoading(false)
@@ -38,13 +40,14 @@ export function ForgotPasswordForm() {
     }, [userProfileRequestSuccess, userProfileRequestFiled]);
 
     useEffect(() => {
-        if (success) navigate("/reset-password", {state: {form: location}})
+        if (success) navigate("/reset-password", {state: {from: location}})
     }, [success])
 
 
-    function handleRecoveryByMail(e) {
+    function handleRecoveryByMail(e:FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!isEmailValid(values.email)) return setEmailError(true);
+        // @ts-ignore
         dispatch(recoveryByMail(values));
     }
 

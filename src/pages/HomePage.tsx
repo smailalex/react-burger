@@ -11,23 +11,28 @@ import Modal from "../components/Modal/Modal";
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
 import {DELETE_MODAL_DATA} from "../services/actions/ingredientModal";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {RootState, Tingredient} from "../utils/interfaces";
+
+
+interface IError {
+    isError: boolean;
+    message: string | undefined;
+}
 
 export const HomePage = () => {
-    //const [isDataLoaded, setIsDataLoaded] = React.useState(false)
-    // const [isLoading, setIsLoading] = React.useState(true)
-    //const [ingredientData, setIngredientData] = React.useState({})
-    const [error, setError] = useState({isError: false, message: ''})
+    const [error, setError] = useState<IError>({isError: false, message: ''});
     const dispatch = useDispatch();
     const params = useParams();
     const navigate = useNavigate();
     const location = useLocation();
 
-    const ingredientDetailsDataSelector = (state) => state.ingredientModal.modalData;
-    const ingredientDetailsData = useSelector(ingredientDetailsDataSelector);
+    // @ts-ignore
+    const ingredientDetailsDataSelector = (state:RootState) => state.ingredientModal.modalData;
+    const ingredientDetailsData: Tingredient = useSelector(ingredientDetailsDataSelector);
     const {
         ingredientRequest, ingredientRequestSuccess, ingredientRequestFiled, ingredients
     } = useSelector(ingredientDataSelector);
-    const [ingredientDetailPageData, setIngredientDetailPageData] = useState(false)
+    const [ingredientDetailPageData, setIngredientDetailPageData] = useState<null |  Tingredient>(null)
 
     const handleModalClose = () => {
         dispatch({type: DELETE_MODAL_DATA})
@@ -38,12 +43,14 @@ export const HomePage = () => {
     }
 
     useEffect(() => {
+        //:TODO не решено
+        // @ts-ignore
         dispatch(getIngredients())
     }, [dispatch]);
 
     useEffect(() => {
         if (!location.state?.isModal && params.id && ingredients.length > 0) {
-            setIngredientDetailPageData(ingredients.find(i => i._id = params.id))
+            setIngredientDetailPageData(ingredients.find((i: { _id: string | undefined; }) => i._id = params.id))
         }
     }, [ingredientRequestSuccess, params, ingredients, location]);
 

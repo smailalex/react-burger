@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, {FC} from 'react';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './Ingredient.module.css';
-import Types from '../../utils/types';
 import {useDrag} from 'react-dnd';
-import Modal from '../Modal/Modal';
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import {useDispatch, useSelector} from "react-redux";
-import {DELETE_MODAL_DATA, SET_MODAL_DATA} from "../../services/actions/ingredientModal";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {ingredientDataSelector} from "../../selectors";
-import {getIngredients} from "../../services/actions/ingredients";
+import {useLocation, useNavigate } from "react-router-dom";
+import {Tingredient} from "../../utils/interfaces";
 
 
-const Ingredient = ({ ingredient}) => {
+
+const Ingredient: FC<{ingredient: Tingredient & {count: number, _id: string} }> = ({ ingredient}) => {
   const navigate = useNavigate();
   const location = useLocation();
   //console.log(ingredient, ingredient)
   const [, dragRef] = useDrag({
+    // @ts-ignore
     type: ingredient.type,
     item: ingredient
   });
 
-
-  const dispatch = useDispatch();
-
-  const handleModalOpen = (ingredient) => {
+  const handleModalOpen = (ingredient: Partial<Tingredient> & { count: number; _id: string; }) => {
     //console.log(location.state)
     navigate('ingredients/'+ingredient._id, {state: {form: location.pathname, ingredient, isModal: true}})
 
@@ -38,7 +31,7 @@ const Ingredient = ({ ingredient}) => {
         <img className={`pl-4 pr-4 ${style.image}`} src={ingredient.image} alt={ingredient.name} />
         <div className={`pt-1 pb-1 ${style.priceWr}`}>
           <p className="text text_type_digits-default p-0 ">{ingredient.price}</p>
-          <CurrencyIcon />
+          <CurrencyIcon type={'secondary'}  />
         </div>
         <p className={`text text_type_main-default ${style.textCenter}`}>{ingredient.name}</p>
       </figure>
@@ -50,5 +43,4 @@ const Ingredient = ({ ingredient}) => {
 
   )
 }
-Ingredient.propTypes = Types.ingredient;
 export default Ingredient

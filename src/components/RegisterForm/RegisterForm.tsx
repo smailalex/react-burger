@@ -24,12 +24,14 @@ export function RegisterForm() {
         "password": ""
     });
     useEffect(() => {
+        //:TODO не решено
+        // @ts-ignore
         dispatch(getUserProfile())
     }, [dispatch]);
 
     useEffect(() => {
         if (userProfileRequestSuccess) {
-            navigate(location.state?.form?.pathname ? location.state.form.pathname : '/')
+            navigate(location.state?.from?.pathname ? location.state.from.pathname : '/')
         }
         if (userProfileRequestFiled) {
             setIsLoading(false)
@@ -37,7 +39,7 @@ export function RegisterForm() {
 
     }, [userProfileRequestSuccess, userProfileRequestFiled]);
 
-    function handleUserProfileCreate(e) {
+    function handleUserProfileCreate(e:React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setNameError(false)
         setEmailError(false)
@@ -47,6 +49,8 @@ export function RegisterForm() {
         if (values.password.length < 5) return setPasswordError(true);
         if (values.name.length < 3) return setNameError(true);
         console.log('handleUserProfileCreate', values)
+        //:TODO не решено
+        // @ts-ignore
         dispatch(makeRegisterUser(values))
     }
 
