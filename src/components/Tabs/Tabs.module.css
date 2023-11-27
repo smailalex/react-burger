@@ -1,0 +1,24 @@
+.tabswr{
+    display:flex;
+}
+.tabswr > div {
+        width: 100%;
+    }
+
+.listWrMain{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-y: auto;
+    max-height: calc(100vh - 360px) ;
+    row-gap: 32px;
+}
+
+.listWrItems{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 32px;
+    column-gap: 24px;
+
+}

@@ -1,0 +1,6 @@
+export const ADD_INGREDIENT = 'ADD_INGREDIENT';
+export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
+export const SET_CART = 'SET_CART';
+export const SET_INGREDIENT_BUN = 'SET_INGREDIENT_BUN';
+export const ERASE_CART = 'ERASE_CART';
+
